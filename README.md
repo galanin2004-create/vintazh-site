@@ -4,6 +4,16 @@
 «Винтаж — Галерея Галаниной», редакция 1.0 (файл
 `Бренд-бук Винтаж (один файл).html`).
 
+## Где живёт
+
+https://galanin2004-create.github.io/vintazh-site/
+
+Деплой автоматический: любой push в `main` запускает
+`.github/workflows/pages.yml` — сборка статики и выкладка на GitHub Pages.
+Адрес сайта для canonical и sitemap задаётся там же переменной
+`NEXT_PUBLIC_SITE_URL`; при переезде на свой домен её и `BASE_PATH`
+нужно убрать.
+
 ## Запуск
 
 ```bash
@@ -22,6 +32,9 @@ STATIC_EXPORT=1 npm run build # статика в out/ — кладётся на
 
 ```bash
 BASE_PATH=/vintazh-site NEXT_PUBLIC_BASE_PATH=/vintazh-site STATIC_EXPORT=1 npm run build
+
+# в Git Bash на Windows добавьте MSYS_NO_PATHCONV=1,
+# иначе /vintazh-site превратится в путь Windows
 ```
 
 ## Что внутри
@@ -74,8 +87,9 @@ BASE_PATH=/vintazh-site NEXT_PUBLIC_BASE_PATH=/vintazh-site STATIC_EXPORT=1 npm 
 3. **Категории.** Списки в `data/taxonomy.ts` взяты из бренд-бука как
    черновые. Замените на фактический перечень; структура трёх блоков при
    этом не меняется.
-4. **Домен.** Указан в `app/layout.tsx` (`metadataBase`), `app/sitemap.ts`
-   и `app/robots.ts` как `vintazh-galanina.ru` — поменяйте на настоящий.
+4. **Домен.** Значение по умолчанию — `vintazh-galanina.ru` в `lib/site.ts`.
+   Пока сайт стоит на GitHub Pages, адрес подменяется переменной
+   `NEXT_PUBLIC_SITE_URL` в workflow.
 5. **Адрес галереи.** На сайте написано «приезд по звонку», точный адрес
    не указан. Если адрес публичный — добавьте его в `lib/brand.ts` и на
    страницу контактов, заодно имеет смысл поставить карту.
