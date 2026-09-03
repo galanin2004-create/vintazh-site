@@ -12,6 +12,7 @@ import {
   brand,
   contacts,
   formatPrice,
+  PRICE_ON_REQUEST,
 } from "@/lib/brand";
 import ItemGallery from "@/components/ItemGallery";
 import ProductCard from "@/components/ProductCard";
@@ -44,7 +45,7 @@ export default async function ItemPage({ params }: Params) {
     .filter((i) => i.slug !== item.slug && !i.sold)
     .map((i) => ({
       item: i,
-      score: (i.kind === item.kind ? 2 : 0) + (i.era === item.era ? 1 : 0),
+      score: (i.kind === item.kind ? 2 : 0) + (item.era && i.era === item.era ? 1 : 0),
     }))
     .filter((r) => r.score > 0)
     .sort((a, b) => b.score - a.score)
@@ -56,19 +57,45 @@ export default async function ItemPage({ params }: Params) {
     "@type": "Product",
     name: item.title,
     description: item.story,
-    material: item.material,
-    sku: item.number,
+    ...(item.material ? { material: item.material } : {}),
+    ...(item.number ? { sku: item.number } : {}),
     brand: { "@type": "Brand", name: brand.full },
     offers: {
       "@type": "Offer",
-      price: item.price,
-      priceCurrency: "RUB",
+      // Без цены оферту с нулём не отдаём — поисковик покажет её как «0 ₽».
+      ...(item.price ? { price: item.price, priceCurrency: "RUB" } : {}),
       availability: item.sold
         ? "https://schema.org/SoldOut"
         : "https://schema.org/InStock",
       itemCondition: "https://schema.org/UsedCondition",
     },
   };
+
+  const metaLine = [
+    label("country", item.country),
+    item.era ? label("era", item.era) : null,
+    label("kind", item.kind),
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  const specs: { key: string; value: string }[] = [
+    ...(item.material ? [{ key: "Материал", value: item.material }] : []),
+    ...(item.size ? [{ key: "Размер", value: item.size }] : []),
+    ...(item.condition ? [{ key: "Состояние", value: item.condition }] : []),
+    { key: "Страна", value: label("country", item.country) },
+    ...(item.era ? [{ key: "Эпоха", value: label("era", item.era) }] : []),
+    ...(item.measurements?.map((m) => ({ key: m.label, value: m.value })) ?? []),
+    ...(item.number ? [{ key: "Номер вещи", value: `№ ${item.number}` }] : []),
+  ];
+
+  /** Чего про вещь пока не знаем — перечисляем прямо, а не замалчиваем. */
+  const unknown = [
+    !item.era ? "эпоха" : null,
+    !item.material ? "состав" : null,
+    !item.size ? "размер" : null,
+    !item.condition ? "состояние" : null,
+  ].filter(Boolean);
 
   return (
     <>
@@ -88,17 +115,16 @@ export default async function ItemPage({ params }: Params) {
             <ItemGallery item={item} />
 
             <div className="item__info">
-              <p className="card__meta">
-                {label("country", item.country)} · {label("era", item.era)} ·{" "}
-                {label("kind", item.kind)}
-              </p>
+              <p className="card__meta">{metaLine}</p>
 
               <h1 className="item__title">{item.title}</h1>
 
               {item.sold ? (
                 <p className="item__price item__price--sold">{CTA_SOLD}</p>
-              ) : (
+              ) : item.price ? (
                 <p className="item__price">{formatPrice(item.price)}</p>
+              ) : (
+                <p className="item__price item__price--ask">{PRICE_ON_REQUEST}</p>
               )}
 
               {/* История вещи — сразу под названием и ценой, до характеристик. */}
@@ -148,42 +174,24 @@ export default async function ItemPage({ params }: Params) {
               </div>
 
               <div className="specs">
-                <div className="specs__row">
-                  <span className="specs__key">Материал</span>
-                  <span>{item.material}</span>
-                </div>
-                <div className="specs__row">
-                  <span className="specs__key">Размер</span>
-                  <span>{item.size}</span>
-                </div>
-                <div className="specs__row">
-                  <span className="specs__key">Состояние</span>
-                  <span>{item.condition}</span>
-                </div>
-                <div className="specs__row">
-                  <span className="specs__key">Страна</span>
-                  <span>{label("country", item.country)}</span>
-                </div>
-                <div className="specs__row">
-                  <span className="specs__key">Эпоха</span>
-                  <span>{label("era", item.era)}</span>
-                </div>
-                {item.measurements?.map((m) => (
-                  <div className="specs__row" key={m.label}>
-                    <span className="specs__key">{m.label}</span>
-                    <span>{m.value}</span>
+                {specs.map((s) => (
+                  <div className="specs__row" key={s.key}>
+                    <span className="specs__key">{s.key}</span>
+                    <span>{s.value}</span>
                   </div>
                 ))}
-                <div className="specs__row">
-                  <span className="specs__key">Номер вещи</span>
-                  <span>№ {item.number}</span>
-                </div>
+                {unknown.length > 0 && (
+                  <div className="specs__row">
+                    <span className="specs__key">Уточняется</span>
+                    <span>{unknown.join(", ")} — спросите в Telegram</span>
+                  </div>
+                )}
               </div>
 
               <p className="item__note">
-                Номер связывает бирку на вещи с этой карточкой. Мерки сняты по
-                вещи, разложенной на столе, — сверяйте с любимой вещью из своего
-                гардероба.
+                {item.measurements
+                  ? "Мерки сняты по вещи, разложенной на столе, — сверяйте с любимой вещью из своего гардероба."
+                  : "Мерки снимем по вашей просьбе и пришлём вместе с дополнительными кадрами."}
               </p>
             </div>
           </div>

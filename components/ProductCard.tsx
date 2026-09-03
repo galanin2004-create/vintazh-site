@@ -1,13 +1,14 @@
 import Link from "next/link";
 import type { Item } from "@/data/items";
 import { label } from "@/data/taxonomy";
-import { formatPrice, CTA_SOLD } from "@/lib/brand";
+import { formatPrice, CTA_SOLD, PRICE_ON_REQUEST } from "@/lib/brand";
 import Photo from "./ui/Photo";
 import { ItemMarks } from "./ui/Mark";
 
 /**
  * Карточка в сетке. Порядок как в бренд-буке (полоса 11):
  * фото 3:4 → рубрика «страна · эпоха · тип» → название → цена → состав.
+ * Незаполненные поля не выдумываем и не прячем — пишем «по запросу».
  */
 export default function ProductCard({
   item,
@@ -16,6 +17,18 @@ export default function ProductCard({
   item: Item;
   priority?: boolean;
 }) {
+  const meta = [
+    label("country", item.country),
+    item.era ? label("era", item.era) : null,
+    label("kind", item.kind),
+  ]
+    .filter(Boolean)
+    .join(" · ");
+
+  const spec = [item.material, item.size ? `размер ${item.size}` : null]
+    .filter(Boolean)
+    .join(" · ");
+
   return (
     <article className={`card${item.sold ? " card--sold" : ""}`}>
       <div className="card__frame">
@@ -32,10 +45,7 @@ export default function ProductCard({
         </div>
       </div>
 
-      <p className="card__meta">
-        {label("country", item.country)} · {label("era", item.era)} ·{" "}
-        {label("kind", item.kind)}
-      </p>
+      <p className="card__meta">{meta}</p>
 
       <h3 className="card__title">
         <Link href={`/catalog/${item.slug}`} className="card__link">
@@ -45,13 +55,13 @@ export default function ProductCard({
 
       {item.sold ? (
         <p className="card__price card__price--sold">{CTA_SOLD}</p>
-      ) : (
+      ) : item.price ? (
         <p className="card__price">{formatPrice(item.price)}</p>
+      ) : (
+        <p className="card__price card__price--ask">{PRICE_ON_REQUEST}</p>
       )}
 
-      <p className="card__spec">
-        {item.material} · размер {item.size}
-      </p>
+      {spec && <p className="card__spec">{spec}</p>}
     </article>
   );
 }

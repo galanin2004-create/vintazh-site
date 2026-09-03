@@ -32,6 +32,7 @@ export const eras: Facet[] = [
 export const kinds: Facet[] = [
   { slug: "outerwear", label: "Верхняя одежда" },
   { slug: "suits", label: "Пиджаки и костюмы" },
+  { slug: "waistcoats", label: "Жилеты" },
   { slug: "dresses", label: "Платья" },
   { slug: "knitwear", label: "Трикотаж" },
   { slug: "shirts", label: "Рубашки и блузы" },

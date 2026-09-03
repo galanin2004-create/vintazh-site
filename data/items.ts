@@ -15,16 +15,22 @@ export type Condition = "Отличное" | "Очень хорошее" | "Хо
 export type Item = {
   slug: string;
   /** Номер с бирки — связывает вещь, карточку и историю. */
-  number: string;
+  number?: string;
   title: string;
   country: string;
-  era: string;
+  /**
+   * Эпоха. Необязательна: если год по вещи не определён, лучше показать
+   * «уточняется», чем выдумать десятилетие. Такая вещь не попадёт под
+   * фильтр эпохи, пока эпоху не проставят.
+   */
+  era?: string;
   kind: string;
-  price: number;
+  /** Без цены карточка показывает «Цена по запросу». */
+  price?: number;
   /** Материал называем всегда и первым (бренд-бук, полоса 02). */
-  material: string;
-  size: string;
-  condition: Condition;
+  material?: string;
+  size?: string;
+  condition?: Condition;
   /** 1–2 предложения, до 240 знаков: факт о происхождении + факт о вещи. */
   story: string;
   /** Мерки в сантиметрах — снимаем по вещи, разложенной на столе. */
@@ -38,6 +44,103 @@ export type Item = {
 };
 
 export const items: Item[] = [
+  /* ——— Реальные вещи. Съёмка владелицы, папка «Японские вещи → Жакеты».
+     Описания составлены по фотографиям: крой, цвет, фактура, фурнитура.
+     Год, состав, размер, состояние и цена не проставлены — по кадру их не
+     определить, и бренд-бук запрещает додумывать. Их заполняет владелица. */
+  {
+    slug: "zhilet-kremovyy-uzkaya-poloska",
+    title: "Жилет в узкую полоску, кремовый",
+    country: "japan",
+    kind: "waistcoats",
+    story:
+      "Светлое полотно в частую красно-серо-синюю полоску, четыре пуговицы под перламутр. Два накладных кармана по бёдрам и прорезной на груди, спинка и подкладка — кремовая ткань в тон.",
+    addedAt: "2026-09-03",
+    photos: ["/items/zhilet-kremovyy-uzkaya-poloska/1.jpg"],
+  },
+  {
+    slug: "zhilet-siniy-tonkaya-poloska",
+    title: "Жилет в тонкую полоску, тёмно-синий",
+    country: "japan",
+    kind: "waistcoats",
+    story:
+      "Тёмно-синее полотно с частой светлой полоской, пять пуговиц в цвет, четыре прорезных кармана. Спинка атласная, синяя, с регулировкой по талии.",
+    addedAt: "2026-09-03",
+    photos: ["/items/zhilet-siniy-tonkaya-poloska/1.jpg"],
+  },
+  {
+    slug: "zhilet-sherst-krasnaya-poloska",
+    title: "Жилет в красно-серую полоску",
+    country: "japan",
+    kind: "waistcoats",
+    story:
+      "Тёмное ворсистое полотно с красными и серыми буклированными полосами — фактура читается даже на кадре. Пять пуговиц, прорезной карман на груди и два по бёдрам, спинка — коричневый атлас.",
+    marks: ["Тяжёлый люкс"],
+    addedAt: "2026-09-03",
+    photos: ["/items/zhilet-sherst-krasnaya-poloska/1.jpg"],
+  },
+  {
+    slug: "zhilet-bezhevyy-shirokaya-poloska",
+    title: "Жилет в широкую полоску, бежевый",
+    country: "japan",
+    kind: "waistcoats",
+    story:
+      "Широкая полоска — кремовая, песочная, серая и пыльно-розовая, полотно с рельефным переплетением. Пять светлых пуговиц, два прорезных кармана, спинка белая.",
+    addedAt: "2026-09-03",
+    photos: ["/items/zhilet-bezhevyy-shirokaya-poloska/1.jpg"],
+  },
+  {
+    slug: "zhilet-siniy-belaya-kletka",
+    title: "Жилет в белую клетку, тёмно-синий",
+    country: "japan",
+    kind: "waistcoats",
+    story:
+      "Крупная белая клетка по тёмно-синему полю, линия набрана мелким зигзагом. Пять пуговиц в тон, два прорезных кармана, спинка — синий атлас.",
+    addedAt: "2026-09-03",
+    photos: ["/items/zhilet-siniy-belaya-kletka/1.jpg"],
+  },
+  {
+    slug: "zhilet-bordovyy-odnotonnyy",
+    title: "Жилет однотонный, бордовый",
+    country: "japan",
+    kind: "waistcoats",
+    story:
+      "Ровный бордовый цвет без рисунка, матовое полотно. Пять тёмных пуговиц, два прорезных кармана по бёдрам, спинка и подкладка — атлас в тон.",
+    addedAt: "2026-09-03",
+    photos: ["/items/zhilet-bordovyy-odnotonnyy/1.jpg"],
+  },
+  {
+    slug: "zhilet-siniy-melovaya-poloska",
+    title: "Жилет в меловую полоску, тёмно-синий",
+    country: "japan",
+    kind: "waistcoats",
+    story:
+      "Классическая меловая полоска по тёмно-синему, шаг широкий. Пять пуговиц, четыре прорезных кармана, спинка — чёрный атлас.",
+    addedAt: "2026-09-03",
+    photos: ["/items/zhilet-siniy-melovaya-poloska/1.jpg"],
+  },
+  {
+    slug: "zhilet-siniy-kletka-ton-v-ton",
+    title: "Жилет в клетку тон в тон, тёмно-синий",
+    country: "japan",
+    kind: "waistcoats",
+    story:
+      "Клетка набрана тон в тон — рисунок виден только вблизи и на свету. Пять пуговиц, четыре прорезных кармана, спинка — серо-стальной атлас.",
+    addedAt: "2026-09-03",
+    photos: ["/items/zhilet-siniy-kletka-ton-v-ton/1.jpg"],
+  },
+  {
+    slug: "zhilet-seryy-uzor-bandana",
+    title: "Жилет с узором бандана, серый",
+    country: "japan",
+    kind: "waistcoats",
+    story:
+      "Серое поле с чёрным узором бандана, собранным в ромбы, — рисунок печатный, плотный по всей площади. Пять пуговиц, два прорезных кармана, спинка чёрная атласная.",
+    addedAt: "2026-09-03",
+    photos: ["/items/zhilet-seryy-uzor-bandana/1.jpg"],
+  },
+
+  /* ——— Демонстрационные вещи. Заменить на реальные. ——— */
   {
     slug: "palto-sherst-shirokoe-plecho",
     number: "0147",

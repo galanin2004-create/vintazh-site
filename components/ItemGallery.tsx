@@ -32,6 +32,8 @@ export default function ItemGallery({ item }: { item: Item }) {
         />
       </div>
 
+      {/* Пока кадр один — полоса превью не нужна. */}
+      {shots.length > 1 && (
       <div className="item__thumbs" role="tablist" aria-label="Кадры вещи">
         {shots.map((s, i) => (
           <button
@@ -47,6 +49,7 @@ export default function ItemGallery({ item }: { item: Item }) {
           </button>
         ))}
       </div>
+      )}
     </div>
   );
 }

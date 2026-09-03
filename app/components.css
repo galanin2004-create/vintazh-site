@@ -513,6 +513,15 @@
   text-transform: uppercase;
 }
 
+/* Цена не проставлена — говорим об этом тихо, тем же набором, что и метки. */
+.card__price--ask {
+  font-family: var(--font-manrope), sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dust);
+}
+
 .card__spec {
   font-size: 13px;
   line-height: 1.55;
@@ -879,6 +888,14 @@
 
 .item__price--sold {
   color: var(--bordo);
+  font-family: var(--font-manrope), sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.item__price--ask {
+  color: var(--dust);
   font-family: var(--font-manrope), sans-serif;
   font-size: 13px;
   letter-spacing: 0.22em;

@@ -34,7 +34,10 @@ export default function CatalogView() {
     AXIS_KEYS.every((key) => {
       if (key === ignore) return true;
       const picked = selected[key];
-      return picked.length === 0 || picked.includes(item[key]);
+      if (picked.length === 0) return true;
+      // Эпоха может быть не проставлена — тогда вещь под фильтр эпохи не идёт.
+      const value = item[key];
+      return value !== undefined && picked.includes(value);
     });
 
   const filtered = useMemo(() => {
@@ -42,8 +45,11 @@ export default function CatalogView() {
     return list.sort((a, b) => {
       // Проданное всегда в конце: витрина показывает то, что можно забрать.
       if (!!a.sold !== !!b.sold) return a.sold ? 1 : -1;
-      if (sort === "price-asc") return a.price - b.price;
-      if (sort === "price-desc") return b.price - a.price;
+      if (sort === "price-asc" || sort === "price-desc") {
+        // Вещи без цены не участвуют в сравнении и уходят в конец.
+        if (!a.price || !b.price) return (a.price ? 0 : 1) - (b.price ? 0 : 1);
+        return sort === "price-asc" ? a.price - b.price : b.price - a.price;
+      }
       return b.addedAt.localeCompare(a.addedAt);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
