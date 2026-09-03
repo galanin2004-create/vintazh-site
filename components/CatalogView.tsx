@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { items as allItems, type Item } from "@/data/items";
 import { axes, label, type Axis } from "@/data/taxonomy";
 import { useUrlQuery, setUrlQuery } from "@/lib/useUrlQuery";
+import { plural } from "@/lib/brand";
 import ProductCard from "./ProductCard";
 
 type Sort = "new" | "price-asc" | "price-desc";
@@ -200,10 +201,3 @@ export default function CatalogView() {
   );
 }
 
-function plural(n: number) {
-  const d10 = n % 10;
-  const d100 = n % 100;
-  if (d10 === 1 && d100 !== 11) return "вещь";
-  if (d10 >= 2 && d10 <= 4 && (d100 < 10 || d100 >= 20)) return "вещи";
-  return "вещей";
-}

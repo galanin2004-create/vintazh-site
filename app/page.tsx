@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { asset } from "@/lib/asset";
-import { brand, principles, contacts, CTA } from "@/lib/brand";
+import { brand, principles, contacts, CTA, plural } from "@/lib/brand";
 import { items, sortNewestFirst } from "@/data/items";
 import { axes } from "@/data/taxonomy";
 import ProductCard from "@/components/ProductCard";
@@ -19,7 +19,7 @@ export default function HomePage() {
           <div className="hero__inner">
             <div className="hero__body">
               <p className="rubric">
-                {brand.city} · галерея винтажа · {inStock} вещей в наличии
+                {brand.city} · галерея винтажа · {inStock} {plural(inStock)} в наличии
               </p>
               <h1>Галерея, а не магазин</h1>
               <p className="hero__formula">{brand.formula}</p>
