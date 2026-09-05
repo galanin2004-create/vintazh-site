@@ -1297,3 +1297,146 @@ a.contactRow:hover .contactRow__value {
   font-size: 13px;
   color: var(--ink-80);
 }
+
+/* ——— Бронь ————————————————————————————————————————————— */
+
+.order {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+}
+
+.order__item {
+  position: sticky;
+  top: 108px;
+  display: flex;
+  flex-direction: column;
+}
+
+.order__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order__pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.field label,
+.field legend {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dust);
+  padding: 0;
+}
+
+.field input,
+.field textarea {
+  font: inherit;
+  color: var(--ink);
+  background: var(--paper-white);
+  border: var(--rule);
+  border-radius: 0;
+  padding: 13px 14px;
+  width: 100%;
+  transition: border-color 0.25s var(--ease);
+}
+
+.field textarea {
+  resize: vertical;
+}
+
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--gold);
+  outline: none;
+}
+
+.field__error {
+  font-size: 13px;
+  color: var(--bordo);
+}
+
+.field__error--wide {
+  border-left: 2px solid var(--bordo);
+  padding-left: 12px;
+}
+
+.order__choices {
+  display: grid;
+  gap: 10px;
+}
+
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  border: var(--rule);
+  font-size: 15px;
+  cursor: pointer;
+  transition: border-color 0.25s var(--ease);
+}
+
+.choice.is-on {
+  border-color: var(--gold);
+}
+
+.choice input {
+  accent-color: var(--gold);
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.agree {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-64);
+  cursor: pointer;
+}
+
+.agree input {
+  accent-color: var(--gold);
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+  flex: none;
+}
+
+.order__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+@media (max-width: 860px) {
+  .order {
+    grid-template-columns: 1fr;
+  }
+  .order__item {
+    position: static;
+  }
+  .order__pair {
+    grid-template-columns: 1fr;
+  }
+}

@@ -47,8 +47,27 @@ BASE_PATH=/vintazh-site NEXT_PUBLIC_BASE_PATH=/vintazh-site STATIC_EXPORT=1 npm 
 | О галерее | `/about` | Бренд-стори, критерии отбора, честность о дефектах, три сегмента аудитории |
 | Визит и бронь | `/visit` | Как проходит бронь, примерка, оплата и отправка |
 | Контакты | `/contacts` | Телефон, Telegram, VK, приём вещей на продажу |
+| Бронь | `/order?item=<slug>` | Форма брони: имя, контакты, город, способ получения, комментарий |
 
 Плюс `sitemap.xml` и `robots.txt` — генерируются автоматически.
+
+## Бронь и CRM
+
+Кнопка «Забронировать эксклюзив» ведёт на `/order?item=<slug>`. Форма шлёт
+заявку POST-запросом на адрес из `NEXT_PUBLIC_ORDER_ENDPOINT`. Приёмник —
+отдельный проект `Desktop/vintazh-crm` (PHP + SQLite): там же список заявок
+и карточки покупателей.
+
+Если переменная не задана — а в сборке для GitHub Pages это так и есть, —
+форма не ломается: она открывает Telegram с уже заполненным текстом заявки.
+Локально проверять так:
+
+```bash
+php -S localhost:8300 -t vintazh-crm/site vintazh-crm/router-dev.php
+```
+
+а в `.env.local` витрины прописать
+`NEXT_PUBLIC_ORDER_ENDPOINT=http://localhost:8300/api/orders`.
 
 ## Как соблюдён бренд-бук
 

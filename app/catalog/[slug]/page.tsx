@@ -141,14 +141,9 @@ export default async function ItemPage({ params }: Params) {
                   </>
                 ) : (
                   <>
-                    <a
-                      className="btn btn--primary"
-                      href={askLink(item.title, item.number)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
+                    <Link className="btn btn--primary" href={`/order?item=${item.slug}`}>
                       {CTA}
-                    </a>
+                    </Link>
                     <a
                       className="btn btn--ghost"
                       href={askLink(item.title, item.number)}
