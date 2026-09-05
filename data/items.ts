@@ -19,9 +19,9 @@ export type Item = {
   title: string;
   country: string;
   /**
-   * Эпоха. Необязательна: если год по вещи не определён, лучше показать
-   * «уточняется», чем выдумать десятилетие. Такая вещь не попадёт под
-   * фильтр эпохи, пока эпоху не проставят.
+   * Эпоха. Сейчас нигде не показывается: галерея год по вещам не
+   * определяет, и ось «Эпоха» убрана из навигации. Поле оставлено на
+   * случай, если эпоху начнут проставлять — см. data/taxonomy.ts.
    */
   era?: string;
   kind: string;
@@ -46,9 +46,9 @@ export type Item = {
 export const items: Item[] = [
   /* ——— Реальные вещи. Съёмка владелицы, папка «Японские вещи → Жакеты».
      Описания составлены по фотографиям: крой, цвет, фактура, фурнитура.
-     Цена — 3500 ₽ за штуку, со слов владелицы. Год, состав, размер и
-     состояние не проставлены: по кадру их не определить, а бренд-бук
-     запрещает додумывать. Эти поля заполняет владелица. */
+     Цена — 3500 ₽ за штуку, со слов владелицы. Состав, размер и состояние
+     не проставлены: по кадру их не определить, а бренд-бук запрещает
+     додумывать. Эти поля заполняет владелица. */
   {
     slug: "zhilet-kremovyy-uzkaya-poloska",
     title: "Жилет в узкую полоску, кремовый",
@@ -156,7 +156,6 @@ export const items: Item[] = [
     number: "0147",
     title: "Пальто из шерсти с широким плечом",
     country: "italy",
-    era: "1980s",
     kind: "outerwear",
     price: 24000,
     material: "Шерсть 100%",
@@ -178,7 +177,6 @@ export const items: Item[] = [
     number: "0148",
     title: "Косуха из плотной кожи",
     country: "germany",
-    era: "1990s",
     kind: "fur-leather",
     price: 32000,
     material: "Кожа телёнка, подкладка — хлопок",
@@ -200,7 +198,6 @@ export const items: Item[] = [
     number: "0143",
     title: "Кашемировое пальто со скрытой застёжкой",
     country: "italy",
-    era: "1980s",
     kind: "outerwear",
     price: 46000,
     material: "Кашемир 100%, подкладка — вискоза в тон",
@@ -222,7 +219,6 @@ export const items: Item[] = [
     number: "0139",
     title: "Твидовый пиджак в ёлочку",
     country: "uk",
-    era: "1970s",
     kind: "suits",
     price: 18500,
     material: "Шерстяной твид, локти — замшевые накладки",
@@ -243,7 +239,6 @@ export const items: Item[] = [
     number: "0136",
     title: "Шёлковое платье с драпировкой на плече",
     country: "france",
-    era: "1970s",
     kind: "dresses",
     price: 21000,
     material: "Шёлк 100%",
@@ -263,7 +258,6 @@ export const items: Item[] = [
     number: "0131",
     title: "Платье-футляр из плотного крепа",
     country: "france",
-    era: "1960s",
     kind: "dresses",
     price: 27000,
     material: "Шерстяной креп, подкладка — шёлк",
@@ -285,7 +279,6 @@ export const items: Item[] = [
     number: "0128",
     title: "Джемпер из шетландской шерсти",
     country: "uk",
-    era: "1980s",
     kind: "knitwear",
     price: 7900,
     material: "Шетландская шерсть 100%",
@@ -305,7 +298,6 @@ export const items: Item[] = [
     number: "0125",
     title: "Кардиган крупной вязки с кожаными пуговицами",
     country: "italy",
-    era: "1990s",
     kind: "knitwear",
     price: 9800,
     material: "Шерсть с добавлением альпаки",
@@ -325,7 +317,6 @@ export const items: Item[] = [
     number: "0122",
     title: "Блуза из шёлкового крепдешина",
     country: "italy",
-    era: "1990s",
     kind: "shirts",
     price: 8400,
     material: "Шёлк-крепдешин 100%",
@@ -345,7 +336,6 @@ export const items: Item[] = [
     number: "0119",
     title: "Сорочка из египетского хлопка",
     country: "uk",
-    era: "1980s",
     kind: "shirts",
     price: 6200,
     material: "Хлопок 100%, двойное кручение",
@@ -365,7 +355,6 @@ export const items: Item[] = [
     number: "0114",
     title: "Шуба из стриженой норки",
     country: "germany",
-    era: "1980s",
     kind: "fur-leather",
     price: 89000,
     material: "Норка стриженая, подкладка — шёлк",
@@ -386,7 +375,6 @@ export const items: Item[] = [
     number: "0110",
     title: "Дублёнка на овчине",
     country: "ussr",
-    era: "1970s",
     kind: "fur-leather",
     price: 16000,
     material: "Овчина натуральная",
@@ -406,7 +394,6 @@ export const items: Item[] = [
     number: "0106",
     title: "Сумка из зернистой кожи с рамочным замком",
     country: "france",
-    era: "1960s",
     kind: "bags",
     price: 34000,
     material: "Зернистая кожа, латунная фурнитура",
@@ -422,7 +409,6 @@ export const items: Item[] = [
     number: "0103",
     title: "Кожаный портфель с латунной фурнитурой",
     country: "germany",
-    era: "1970s",
     kind: "bags",
     price: 23000,
     material: "Кожа растительного дубления",
@@ -437,7 +423,6 @@ export const items: Item[] = [
     number: "0098",
     title: "Ботинки на ранте, тёмная кожа",
     country: "uk",
-    era: "1990s",
     kind: "shoes",
     price: 14500,
     material: "Кожа, подошва — кожа на ранте",
@@ -452,7 +437,6 @@ export const items: Item[] = [
     number: "0094",
     title: "Лодочки из замши",
     country: "italy",
-    era: "1980s",
     kind: "shoes",
     price: 11000,
     material: "Замша, кожаная стелька",
@@ -468,7 +452,6 @@ export const items: Item[] = [
     number: "0090",
     title: "Фетровая шляпа с широкими полями",
     country: "italy",
-    era: "1950s",
     kind: "hats",
     price: 12000,
     material: "Кроличий фетр, лента — репс",
@@ -483,7 +466,6 @@ export const items: Item[] = [
     number: "0086",
     title: "Шёлковый платок с архитектурным принтом",
     country: "france",
-    era: "1990s",
     kind: "hats",
     price: 9500,
     material: "Шёлк-твил 100%",
@@ -498,7 +480,6 @@ export const items: Item[] = [
     number: "0081",
     title: "Брошь с горным хрусталём в серебре",
     country: "ussr",
-    era: "1950s",
     kind: "jewelry",
     price: 13000,
     material: "Серебро 875 пробы, горный хрусталь",
@@ -513,7 +494,6 @@ export const items: Item[] = [
     number: "0077",
     title: "Часы-браслет в позолоте",
     country: "japan",
-    era: "1990s",
     kind: "jewelry",
     price: 15000,
     material: "Сталь с позолотой, минеральное стекло",
@@ -528,7 +508,6 @@ export const items: Item[] = [
     number: "0072",
     title: "Тренч из хлопкового габардина",
     country: "uk",
-    era: "1990s",
     kind: "outerwear",
     price: 26000,
     material: "Хлопковый габардин, подкладка — вискоза",
@@ -544,7 +523,6 @@ export const items: Item[] = [
     number: "0068",
     title: "Бомбер из плотного нейлона",
     country: "japan",
-    era: "1990s",
     kind: "outerwear",
     price: 19000,
     material: "Нейлон, подкладка — сатин",
@@ -559,7 +537,6 @@ export const items: Item[] = [
     number: "0063",
     title: "Смокинг с атласными лацканами",
     country: "italy",
-    era: "1960s",
     kind: "suits",
     price: 38000,
     material: "Шерсть, лацканы — шёлковый атлас",
@@ -576,7 +553,6 @@ export const items: Item[] = [
     number: "0059",
     title: "Джинсовая куртка из селвидж-денима",
     country: "usa",
-    era: "1990s",
     kind: "outerwear",
     price: 12000,
     material: "Селвидж-деним 14 oz",
@@ -591,7 +567,6 @@ export const items: Item[] = [
     number: "0054",
     title: "Пальто-редингот из плотной шерсти",
     country: "france",
-    era: "pre-1950",
     kind: "outerwear",
     price: 42000,
     material: "Шерсть 100%, подкладка — вискоза",
@@ -612,7 +587,6 @@ export const items: Item[] = [
     number: "0049",
     title: "Сумка из лакированной кожи",
     country: "italy",
-    era: "2000s",
     kind: "bags",
     price: 17000,
     material: "Лакированная кожа, подкладка — текстиль",
@@ -627,7 +601,6 @@ export const items: Item[] = [
     number: "0045",
     title: "Лоденовое пальто с пелериной",
     country: "other",
-    era: "1970s",
     kind: "outerwear",
     price: 20000,
     material: "Лоден: валяная шерсть 100%",

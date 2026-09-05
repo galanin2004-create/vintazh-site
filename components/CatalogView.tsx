@@ -10,9 +10,9 @@ import ProductCard from "./ProductCard";
 
 type Sort = "new" | "price-asc" | "price-desc";
 
-const AXIS_KEYS: Axis[] = ["country", "era", "kind"];
+const AXIS_KEYS: Axis[] = ["country", "kind"];
 
-/** Каталог фильтруется по трём осям одновременно (бренд-бук, полоса 09). */
+/** Каталог фильтруется по двум осям одновременно: страна и тип вещи. */
 export default function CatalogView() {
   const params = useUrlQuery();
   const [openFilters, setOpenFilters] = useState(false);
@@ -20,7 +20,7 @@ export default function CatalogView() {
   const query = params.toString();
 
   const selected = useMemo(() => {
-    const out: Record<Axis, string[]> = { country: [], era: [], kind: [] };
+    const out: Record<Axis, string[]> = { country: [], kind: [] };
     for (const key of AXIS_KEYS) {
       const raw = params.get(key);
       if (raw) out[key] = raw.split(",").filter(Boolean);
@@ -35,10 +35,7 @@ export default function CatalogView() {
     AXIS_KEYS.every((key) => {
       if (key === ignore) return true;
       const picked = selected[key];
-      if (picked.length === 0) return true;
-      // Эпоха может быть не проставлена — тогда вещь под фильтр эпохи не идёт.
-      const value = item[key];
-      return value !== undefined && picked.includes(value);
+      return picked.length === 0 || picked.includes(item[key]);
     });
 
   const filtered = useMemo(() => {

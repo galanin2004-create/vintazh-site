@@ -1,5 +1,4 @@
 import type { Item } from "@/data/items";
-import { label } from "@/data/taxonomy";
 
 /** Метка на фото. Бренд-бук, полоса 11. */
 export function Mark({
@@ -23,7 +22,6 @@ export function ItemMarks({ item, compact = false }: { item: Item; compact?: boo
   return (
     <>
       <Mark>Один экземпляр</Mark>
-      {!compact && item.era && <Mark tone="ink">{label("era", item.era)}</Mark>}
       {!compact &&
         item.marks?.map((m) => (
           <Mark key={m} tone="ink">

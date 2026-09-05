@@ -45,7 +45,8 @@ export default async function ItemPage({ params }: Params) {
     .filter((i) => i.slug !== item.slug && !i.sold)
     .map((i) => ({
       item: i,
-      score: (i.kind === item.kind ? 2 : 0) + (item.era && i.era === item.era ? 1 : 0),
+      score:
+        (i.kind === item.kind ? 2 : 0) + (i.country === item.country ? 1 : 0),
     }))
     .filter((r) => r.score > 0)
     .sort((a, b) => b.score - a.score)
@@ -71,27 +72,19 @@ export default async function ItemPage({ params }: Params) {
     },
   };
 
-  const metaLine = [
-    label("country", item.country),
-    item.era ? label("era", item.era) : null,
-    label("kind", item.kind),
-  ]
-    .filter(Boolean)
-    .join(" · ");
+  const metaLine = `${label("country", item.country)} · ${label("kind", item.kind)}`;
 
   const specs: { key: string; value: string }[] = [
     ...(item.material ? [{ key: "Материал", value: item.material }] : []),
     ...(item.size ? [{ key: "Размер", value: item.size }] : []),
     ...(item.condition ? [{ key: "Состояние", value: item.condition }] : []),
     { key: "Страна", value: label("country", item.country) },
-    ...(item.era ? [{ key: "Эпоха", value: label("era", item.era) }] : []),
     ...(item.measurements?.map((m) => ({ key: m.label, value: m.value })) ?? []),
     ...(item.number ? [{ key: "Номер вещи", value: `№ ${item.number}` }] : []),
   ];
 
   /** Чего про вещь пока не знаем — перечисляем прямо, а не замалчиваем. */
   const unknown = [
-    !item.era ? "эпоха" : null,
     !item.material ? "состав" : null,
     !item.size ? "размер" : null,
     !item.condition ? "состояние" : null,

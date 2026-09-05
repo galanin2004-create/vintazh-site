@@ -7,7 +7,7 @@ import { ItemMarks } from "./ui/Mark";
 
 /**
  * Карточка в сетке. Порядок как в бренд-буке (полоса 11):
- * фото 3:4 → рубрика «страна · эпоха · тип» → название → цена → состав.
+ * фото 3:4 → рубрика «страна · тип» → название → цена → состав.
  * Незаполненные поля не выдумываем и не прячем — пишем «по запросу».
  */
 export default function ProductCard({
@@ -17,13 +17,7 @@ export default function ProductCard({
   item: Item;
   priority?: boolean;
 }) {
-  const meta = [
-    label("country", item.country),
-    item.era ? label("era", item.era) : null,
-    label("kind", item.kind),
-  ]
-    .filter(Boolean)
-    .join(" · ");
+  const meta = `${label("country", item.country)} · ${label("kind", item.kind)}`;
 
   const spec = [item.material, item.size ? `размер ${item.size}` : null]
     .filter(Boolean)
