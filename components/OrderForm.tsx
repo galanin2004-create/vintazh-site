@@ -14,14 +14,15 @@ import {
   PRICE_ON_REQUEST,
 } from "@/lib/brand";
 import { useUrlQuery } from "@/lib/useUrlQuery";
+import { ordersEndpoint } from "@/lib/crm";
+import { useItemState } from "./AvailabilityProvider";
 import Photo from "./ui/Photo";
 
-/**
- * Приёмник заявок. Адрес задаётся при сборке; если он пуст — форма не
- * исчезает, а уводит в Telegram с готовым текстом. Так витрина на GitHub
- * Pages, где своего сервера нет, всё равно принимает брони.
- */
-const ENDPOINT = process.env.NEXT_PUBLIC_ORDER_ENDPOINT ?? "";
+/*
+  Адрес приёмника берётся из lib/crm. Пусто — форма не исчезает, а уводит
+  в Telegram с готовым текстом: витрина на GitHub Pages, где своего сервера
+  нет, всё равно принимает брони.
+*/
 
 type Delivery = "gallery" | "shipping";
 type Errors = Partial<Record<string, string>>;
@@ -30,6 +31,7 @@ export default function OrderForm() {
   const params = useUrlQuery();
   const slug = params.get("item") ?? "";
   const item = slug ? itemBySlug(slug) : undefined;
+  const state = useItemState(slug, item?.sold);
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -59,13 +61,16 @@ export default function OrderForm() {
     );
   }
 
-  if (item.sold) {
+  // Занятость приходит из CRM: бронировать уже отданное или отложенное нельзя.
+  if (!done && state !== "free") {
+    const sold = state === "sold";
     return (
       <div className="empty">
-        <p className="rubric">Вещь ушла</p>
-        <p className="text" style={{ maxWidth: "44ch" }}>
-          «{item.title}» уже забрали. Напишите нам — подскажем, если появится
-          что-то близкое.
+        <p className="rubric">{sold ? "Вещь ушла" : "Вещь отложена"}</p>
+        <p className="text" style={{ maxWidth: "46ch" }}>
+          {sold
+            ? `«${item.title}» уже забрали. Напишите нам — подскажем, если появится что-то близкое.`
+            : `«${item.title}» держат за другим покупателем. Если бронь сорвётся, вещь вернётся на витрину — напишите, и мы скажем вам первым.`}
         </p>
         <a
           className="btn btn--primary"
@@ -129,14 +134,14 @@ export default function OrderForm() {
     setFailed(null);
     if (!validate()) return;
 
-    if (!ENDPOINT) {
+    if (!ordersEndpoint) {
       viaTelegram();
       return;
     }
 
     setSending(true);
     try {
-      const response = await fetch(ENDPOINT, {
+      const response = await fetch(ordersEndpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

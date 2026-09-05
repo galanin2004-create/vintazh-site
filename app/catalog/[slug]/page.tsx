@@ -3,17 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { items, itemBySlug } from "@/data/items";
 import { label } from "@/data/taxonomy";
-import {
-  CTA,
-  CTA_SECOND,
-  CTA_SOLD,
-  HOLD_NOTE,
-  askLink,
-  brand,
-  contacts,
-  formatPrice,
-  PRICE_ON_REQUEST,
-} from "@/lib/brand";
+import { brand } from "@/lib/brand";
+import { ItemPrice, ItemActions } from "@/components/ItemBooking";
 import ItemGallery from "@/components/ItemGallery";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/ui/Reveal";
@@ -112,13 +103,8 @@ export default async function ItemPage({ params }: Params) {
 
               <h1 className="item__title">{item.title}</h1>
 
-              {item.sold ? (
-                <p className="item__price item__price--sold">{CTA_SOLD}</p>
-              ) : item.price ? (
-                <p className="item__price">{formatPrice(item.price)}</p>
-              ) : (
-                <p className="item__price item__price--ask">{PRICE_ON_REQUEST}</p>
-              )}
+              {/* Цена зависит от занятости — её знает только CRM. */}
+              <ItemPrice item={item} />
 
               {/* История вещи — сразу под названием и ценой, до характеристик. */}
               <div className="story">
@@ -126,40 +112,7 @@ export default async function ItemPage({ params }: Params) {
                 <p className="story__text">{item.story}</p>
               </div>
 
-              <div className="item__actions">
-                {item.sold ? (
-                  <>
-                    <span className="btn btn--sold">{CTA_SOLD}</span>
-                    <a
-                      className="btn btn--ghost"
-                      href={askLink(item.title, item.number)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Найти похожую
-                    </a>
-                  </>
-                ) : (
-                  <>
-                    <Link className="btn btn--primary" href={`/order?item=${item.slug}`}>
-                      {CTA}
-                    </Link>
-                    <a
-                      className="btn btn--ghost"
-                      href={askLink(item.title, item.number)}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {CTA_SECOND}
-                    </a>
-                    <p className="item__note">
-                      {HOLD_NOTE}. Бронь бесплатная: вещь снимается с витрины, и
-                      никто другой её не заберёт. Смотреть в галерее —{" "}
-                      {brand.city}, по звонку на {contacts.phone}.
-                    </p>
-                  </>
-                )}
-              </div>
+              <ItemActions item={item} />
 
               <div className="specs">
                 {specs.map((s) => (

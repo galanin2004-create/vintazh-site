@@ -1440,3 +1440,18 @@ a.contactRow:hover .contactRow__value {
     grid-template-columns: 1fr;
   }
 }
+
+/* Вещь отложена за покупателем — CRM подсказала это витрине. */
+.mark--hold {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--paper);
+}
+
+.card__hold {
+  font-family: var(--font-manrope), sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dust);
+}

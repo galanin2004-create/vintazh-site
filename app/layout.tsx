@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Prata } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import AvailabilityProvider from "@/components/AvailabilityProvider";
 import { brand, contacts } from "@/lib/brand";
 import { SITE } from "@/lib/site";
 import "./globals.css";
@@ -63,9 +64,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a className="skip" href="#main">
           К содержанию
         </a>
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
+        <AvailabilityProvider>
+          <Header />
+          <main id="main">{children}</main>
+          <Footer />
+        </AvailabilityProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }}
