@@ -25,7 +25,42 @@ import Photo from "./ui/Photo";
 */
 
 type Delivery = "gallery" | "shipping";
+type ShipMethod = "post" | "cdek" | "boxberry" | "courier";
+type Payment = "transfer" | "on_delivery";
 type Errors = Partial<Record<string, string>>;
+
+/** Службы доставки. Список правится здесь — форма подстроится сама. */
+const SHIP_METHODS: {
+  value: ShipMethod;
+  label: string;
+  needsPostcode: boolean;
+  addressHint: string;
+}[] = [
+  {
+    value: "post",
+    label: "Почта России",
+    needsPostcode: true,
+    addressHint: "Улица, дом, квартира",
+  },
+  {
+    value: "cdek",
+    label: "СДЭК",
+    needsPostcode: false,
+    addressHint: "Адрес пункта выдачи или его код",
+  },
+  {
+    value: "boxberry",
+    label: "Boxberry",
+    needsPostcode: false,
+    addressHint: "Адрес пункта выдачи или его код",
+  },
+  {
+    value: "courier",
+    label: `Курьер по городу ${brand.city}`,
+    needsPostcode: false,
+    addressHint: "Улица, дом, квартира",
+  },
+];
 
 export default function OrderForm() {
   const params = useUrlQuery();
@@ -41,10 +76,20 @@ export default function OrderForm() {
   const [comment, setComment] = useState("");
   const [agreed, setAgreed] = useState(false);
 
+  const [shipMethod, setShipMethod] = useState<ShipMethod>("post");
+  const [recipient, setRecipient] = useState("");
+  const [postcode, setPostcode] = useState("");
+  const [region, setRegion] = useState("");
+  const [address, setAddress] = useState("");
+  const [payment, setPayment] = useState<Payment>("transfer");
+
   const [errors, setErrors] = useState<Errors>({});
   const [sending, setSending] = useState(false);
   const [done, setDone] = useState<{ code: string; holdHours: number } | null>(null);
   const [failed, setFailed] = useState<string | null>(null);
+
+  const method = SHIP_METHODS.find((m) => m.value === shipMethod)!;
+  const shipping = delivery === "shipping";
 
   if (!slug || !item) {
     return (
@@ -89,9 +134,12 @@ export default function OrderForm() {
       <div className="empty">
         <p className="rubric">Заявка {done.code}</p>
         <h2 style={{ marginBlock: "6px 8px" }}>Вещь за вами</h2>
-        <p className="text" style={{ maxWidth: "46ch" }}>
-          Сняли «{item.title}» с витрины и держим {done.holdHours} часа. Свяжемся
-          в ближайшее время — если удобнее самим, звоните на {contacts.phone}.
+        <p className="text" style={{ maxWidth: "48ch" }}>
+          Сняли «{item.title}» с витрины и держим {done.holdHours} часа.
+          {shipping
+            ? " Свяжемся, подтвердим адрес и пришлём трек-номер, как только посылка уйдёт."
+            : " Свяжемся и договоримся о времени визита."}{" "}
+          Если удобнее самим — звоните на {contacts.phone}.
         </p>
         <Link href="/catalog" className="btn btn--ghost">
           Вернуться к вещам
@@ -103,9 +151,26 @@ export default function OrderForm() {
   const validate = () => {
     const next: Errors = {};
     if (name.trim().length < 2) next.name = "Как к вам обращаться?";
-    if (phone.replace(/\D/g, "").length < 10 && telegram.trim() === "") {
+
+    const digits = phone.replace(/\D/g, "");
+    if (digits.length < 10 && telegram.trim() === "") {
       next.phone = "Оставьте телефон или Telegram — иначе мы не ответим";
     }
+    if (shipping && digits.length < 10) {
+      next.phone = "Для отправки нужен телефон: его требует служба доставки";
+    }
+
+    if (shipping) {
+      if (recipient.trim().split(/\s+/).length < 2 || recipient.trim().length < 5) {
+        next.recipient = "Фамилия, имя и отчество — как в паспорте";
+      }
+      if (method.needsPostcode && !/^\d{6}$/.test(postcode.trim())) {
+        next.postcode = "Почте нужен индекс из шести цифр";
+      }
+      if (address.trim().length < 5) next.address = method.addressHint;
+      if (city.trim().length < 2) next.city = "Укажите город доставки";
+    }
+
     if (!agreed) next.agreed = "Без согласия не сможем принять заявку";
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -113,17 +178,23 @@ export default function OrderForm() {
 
   /** Запасной путь: адреса приёмника нет — уводим в Telegram с готовым текстом. */
   const viaTelegram = () => {
-    const how = delivery === "gallery" ? "заберу в галерее" : "нужна отправка";
-    const text =
-      `Здравствуйте! Бронирую «${item.title}»` +
-      (item.number ? `, № ${item.number}` : "") +
-      `.\nИмя: ${name}` +
-      (phone ? `\nТелефон: ${phone}` : "") +
-      (city ? `\nГород: ${city}` : "") +
-      `\nПолучение: ${how}` +
-      (comment ? `\nКомментарий: ${comment}` : "");
+    const lines = [
+      `Здравствуйте! Бронирую «${item.title}»${item.number ? `, № ${item.number}` : ""}.`,
+      `Имя: ${name}`,
+      phone ? `Телефон: ${phone}` : "",
+      shipping
+        ? [
+            `Отправка: ${method.label}`,
+            `Получатель: ${recipient}`,
+            `Адрес: ${[postcode, region, city, address].filter(Boolean).join(", ")}`,
+            `Расчёт: ${payment === "transfer" ? "перевод до отправки" : "оплата при получении"}`,
+          ].join("\n")
+        : `Заберу в галерее${city ? `, ${city}` : ""}`,
+      comment ? `Комментарий: ${comment}` : "",
+    ].filter(Boolean);
+
     window.open(
-      `${contacts.telegramHref}?text=${encodeURIComponent(text)}`,
+      `${contacts.telegramHref}?text=${encodeURIComponent(lines.join("\n"))}`,
       "_blank",
       "noreferrer",
     );
@@ -154,6 +225,16 @@ export default function OrderForm() {
           itemSlug: item.slug,
           itemTitle: item.title,
           itemPrice: item.price ?? null,
+          ...(shipping
+            ? {
+                shipMethod,
+                recipient: recipient.trim(),
+                postcode: postcode.trim(),
+                region: region.trim(),
+                address: address.trim(),
+                payment,
+              }
+            : {}),
         }),
       });
       const data = await response.json().catch(() => null);
@@ -192,7 +273,11 @@ export default function OrderForm() {
         <p className="item__note" style={{ marginTop: "14px" }}>
           {HOLD_NOTE}. Бронь бесплатная и ни к чему не обязывает.
         </p>
-        <Link href={`/catalog/${item.slug}`} className="reset" style={{ marginTop: "14px", display: "inline-block" }}>
+        <Link
+          href={`/catalog/${item.slug}`}
+          className="reset"
+          style={{ marginTop: "14px", display: "inline-block" }}
+        >
           Вернуться к вещи
         </Link>
       </aside>
@@ -235,17 +320,6 @@ export default function OrderForm() {
           </div>
         </div>
 
-        <div className="field">
-          <label htmlFor="city">Город</label>
-          <input
-            id="city"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder={brand.city}
-            autoComplete="address-level2"
-          />
-        </div>
-
         <fieldset className="field">
           <legend>Как заберёте вещь</legend>
           <div className="order__choices">
@@ -270,13 +344,149 @@ export default function OrderForm() {
         </fieldset>
 
         <div className="field">
+          <label htmlFor="city">Город</label>
+          <input
+            id="city"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            placeholder={brand.city}
+            autoComplete="address-level2"
+          />
+          {errors.city && <span className="field__error">{errors.city}</span>}
+        </div>
+
+        {/* Данные для посылки спрашиваем только когда они нужны */}
+        {shipping && (
+          <div className="order__ship">
+            <p className="rubric">Куда отправить</p>
+
+            <fieldset className="field">
+              <legend>Служба доставки</legend>
+              <div className="order__choices">
+                {SHIP_METHODS.map((m) => (
+                  <label
+                    key={m.value}
+                    className={`choice${shipMethod === m.value ? " is-on" : ""}`}
+                  >
+                    <input
+                      type="radio"
+                      name="shipMethod"
+                      value={m.value}
+                      checked={shipMethod === m.value}
+                      onChange={() => setShipMethod(m.value)}
+                    />
+                    <span>{m.label}</span>
+                  </label>
+                ))}
+              </div>
+              {errors.shipMethod && (
+                <span className="field__error">{errors.shipMethod}</span>
+              )}
+            </fieldset>
+
+            <div className="field">
+              <label htmlFor="recipient">Получатель</label>
+              <input
+                id="recipient"
+                value={recipient}
+                onChange={(e) => setRecipient(e.target.value)}
+                placeholder="Фамилия Имя Отчество"
+                autoComplete="name"
+              />
+              <span className="field__hint">
+                Полностью, как в паспорте: по нему выдают посылку.
+              </span>
+              {errors.recipient && (
+                <span className="field__error">{errors.recipient}</span>
+              )}
+            </div>
+
+            <div className="order__pair">
+              {method.needsPostcode && (
+                <div className="field">
+                  <label htmlFor="postcode">Индекс</label>
+                  <input
+                    id="postcode"
+                    inputMode="numeric"
+                    value={postcode}
+                    onChange={(e) => setPostcode(e.target.value)}
+                    placeholder="600000"
+                    autoComplete="postal-code"
+                  />
+                  {errors.postcode && (
+                    <span className="field__error">{errors.postcode}</span>
+                  )}
+                </div>
+              )}
+
+              <div className="field">
+                <label htmlFor="region">Область, край или республика</label>
+                <input
+                  id="region"
+                  value={region}
+                  onChange={(e) => setRegion(e.target.value)}
+                  placeholder="Владимирская область"
+                  autoComplete="address-level1"
+                />
+              </div>
+            </div>
+
+            <div className="field">
+              <label htmlFor="address">Адрес</label>
+              <input
+                id="address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder={method.addressHint}
+                autoComplete="street-address"
+              />
+              {errors.address && <span className="field__error">{errors.address}</span>}
+            </div>
+
+            <fieldset className="field">
+              <legend>Как рассчитаемся</legend>
+              <div className="order__choices">
+                {(
+                  [
+                    ["transfer", "Переведу до отправки"],
+                    ["on_delivery", "Оплачу при получении"],
+                  ] as [Payment, string][]
+                ).map(([value, text]) => (
+                  <label
+                    key={value}
+                    className={`choice${payment === value ? " is-on" : ""}`}
+                  >
+                    <input
+                      type="radio"
+                      name="payment"
+                      value={value}
+                      checked={payment === value}
+                      onChange={() => setPayment(value)}
+                    />
+                    <span>{text}</span>
+                  </label>
+                ))}
+              </div>
+              <span className="field__hint">
+                Стоимость доставки посчитаем и назовём до отправки.
+              </span>
+              {errors.payment && <span className="field__error">{errors.payment}</span>}
+            </fieldset>
+          </div>
+        )}
+
+        <div className="field">
           <label htmlFor="comment">Комментарий</label>
           <textarea
             id="comment"
             rows={3}
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            placeholder="Когда удобно приехать, что уточнить по вещи"
+            placeholder={
+              shipping
+                ? "Что уточнить по вещи, пожелания по отправке"
+                : "Когда удобно приехать, что уточнить по вещи"
+            }
           />
         </div>
 
@@ -287,8 +497,8 @@ export default function OrderForm() {
             onChange={(e) => setAgreed(e.target.checked)}
           />
           <span>
-            Согласен на обработку имени и контактов, чтобы галерея связалась со
-            мной по этой заявке.
+            Согласен на обработку имени, контактов и адреса, чтобы галерея
+            связалась со мной и отправила заказ.
           </span>
         </label>
         {errors.agreed && <span className="field__error">{errors.agreed}</span>}

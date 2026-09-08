@@ -6,7 +6,9 @@
     "dev": "next dev -p 3220",
     "build": "next build",
     "start": "next start -p 3220",
-    "lint": "next lint"
+    "lint": "next lint",
+    "crm": "php -S localhost:8300 -t ../vintazh-crm/site ../vintazh-crm/router-dev.php",
+    "sync-sold": "node scripts/sync-sold.mjs"
   },
   "dependencies": {
     "next": "^16.3.1",

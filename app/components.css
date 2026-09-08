@@ -1455,3 +1455,18 @@ a.contactRow:hover .contactRow__value {
   text-transform: uppercase;
   color: var(--dust);
 }
+
+/* Блок доставки — появляется, только если вещь отправляют. */
+.order__ship {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-left: 2px solid var(--gold);
+  padding-left: clamp(16px, 2vw, 24px);
+}
+
+.field__hint {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--dust);
+}
