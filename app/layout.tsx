@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Prata } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import CursorGlow from "@/components/ui/CursorGlow";
 import AvailabilityProvider from "@/components/AvailabilityProvider";
 import { brand, contacts } from "@/lib/brand";
 import { SITE } from "@/lib/site";
@@ -64,6 +65,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <a className="skip" href="#main">
           К содержанию
         </a>
+        <CursorGlow />
         <AvailabilityProvider>
           <Header />
           <main id="main">{children}</main>
