@@ -26,39 +26,60 @@ import Photo from "./ui/Photo";
 
 type Delivery = "gallery" | "shipping";
 type ShipMethod = "post" | "cdek" | "yandex" | "courier";
-type Payment = "transfer" | "on_delivery";
+type Payment = "transfer" | "on_delivery" | "escrow";
 type Errors = Partial<Record<string, string>>;
 
-/** Службы доставки. Список правится здесь — форма подстроится сама. */
+/** Способы расчёта. Какие из них доступны, решает служба доставки. */
+const PAYMENTS: Record<Payment, { label: string; short: string }> = {
+  transfer: { label: "Переведу до отправки", short: "перевод до отправки" },
+  on_delivery: { label: "Оплачу при получении", short: "оплата при получении" },
+  escrow: { label: "Надёжная сделка СДЭК", short: "Надёжная сделка СДЭК" },
+};
+
+/**
+ * Службы доставки. Список правится здесь — форма подстроится сама.
+ * Тот же список — в ship_methods() CRM, правятся вместе.
+ */
 const SHIP_METHODS: {
   value: ShipMethod;
   label: string;
   needsPostcode: boolean;
   addressHint: string;
+  /** Срок и способ расчёта — чтобы не ходить за этим на страницу «Визит». */
+  hint: string;
+  payments: Payment[];
 }[] = [
   {
     value: "post",
     label: "Почта России",
     needsPostcode: true,
     addressHint: "Улица, дом, квартира",
+    hint: "В любое отделение страны, 3–7 дней. При оплате на почте посылку можно вскрыть при операторе и отказаться.",
+    payments: ["transfer", "on_delivery"],
   },
   {
     value: "cdek",
     label: "СДЭК",
     needsPostcode: false,
     addressHint: "Адрес пункта выдачи или его код",
+    hint: "До пункта выдачи или до двери, 1–3 дня. «Надёжная сделка»: деньги уходят нам после того, как вы получили и осмотрели вещь.",
+    payments: ["transfer", "escrow"],
   },
   {
     value: "yandex",
     label: "Яндекс Доставка",
     needsPostcode: false,
     addressHint: "Адрес пункта выдачи Яндекса или постамата",
+    hint: "В пункт выдачи или постамат, обычно 1–3 дня. Только по предоплате: у Яндекса нет оплаты при получении.",
+    payments: ["transfer"],
   },
   {
     value: "courier",
     label: `Курьер по городу ${brand.city}`,
     needsPostcode: false,
     addressHint: "Улица, дом, квартира",
+    hint: "Привезём сами или курьером Яндекса в день договорённости. Стоимость обсудим при брони.",
+    payments: ["transfer", "on_delivery"],
   },
 ];
 
@@ -187,7 +208,7 @@ export default function OrderForm() {
             `Отправка: ${method.label}`,
             `Получатель: ${recipient}`,
             `Адрес: ${[postcode, region, city, address].filter(Boolean).join(", ")}`,
-            `Расчёт: ${payment === "transfer" ? "перевод до отправки" : "оплата при получении"}`,
+            `Расчёт: ${PAYMENTS[payment].short}`,
           ].join("\n")
         : `Заберу в галерее${city ? `, ${city}` : ""}`,
       comment ? `Комментарий: ${comment}` : "",
@@ -373,12 +394,16 @@ export default function OrderForm() {
                       name="shipMethod"
                       value={m.value}
                       checked={shipMethod === m.value}
-                      onChange={() => setShipMethod(m.value)}
+                      onChange={() => {
+                        setShipMethod(m.value);
+                        if (!m.payments.includes(payment)) setPayment("transfer");
+                      }}
                     />
                     <span>{m.label}</span>
                   </label>
                 ))}
               </div>
+              <span className="field__hint">{method.hint}</span>
               {errors.shipMethod && (
                 <span className="field__error">{errors.shipMethod}</span>
               )}
@@ -446,12 +471,7 @@ export default function OrderForm() {
             <fieldset className="field">
               <legend>Как рассчитаемся</legend>
               <div className="order__choices">
-                {(
-                  [
-                    ["transfer", "Переведу до отправки"],
-                    ["on_delivery", "Оплачу при получении"],
-                  ] as [Payment, string][]
-                ).map(([value, text]) => (
+                {method.payments.map((value) => (
                   <label
                     key={value}
                     className={`choice${payment === value ? " is-on" : ""}`}
@@ -463,12 +483,13 @@ export default function OrderForm() {
                       checked={payment === value}
                       onChange={() => setPayment(value)}
                     />
-                    <span>{text}</span>
+                    <span>{PAYMENTS[value].label}</span>
                   </label>
                 ))}
               </div>
               <span className="field__hint">
-                Стоимость доставки посчитаем и назовём до отправки.
+                Доставку оплачиваете по тарифу службы — точную сумму назовём
+                до отправки, сверху ничего не добавляем.
               </span>
               {errors.payment && <span className="field__error">{errors.payment}</span>}
             </fieldset>
