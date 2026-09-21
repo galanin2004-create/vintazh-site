@@ -25,7 +25,7 @@ import Photo from "./ui/Photo";
 */
 
 type Delivery = "gallery" | "shipping";
-type ShipMethod = "post" | "cdek" | "boxberry" | "courier";
+type ShipMethod = "post" | "cdek" | "yandex" | "courier";
 type Payment = "transfer" | "on_delivery";
 type Errors = Partial<Record<string, string>>;
 
@@ -49,10 +49,10 @@ const SHIP_METHODS: {
     addressHint: "Адрес пункта выдачи или его код",
   },
   {
-    value: "boxberry",
-    label: "Boxberry",
+    value: "yandex",
+    label: "Яндекс Доставка",
     needsPostcode: false,
-    addressHint: "Адрес пункта выдачи или его код",
+    addressHint: "Адрес пункта выдачи Яндекса или постамата",
   },
   {
     value: "courier",

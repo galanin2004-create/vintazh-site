@@ -36,6 +36,9 @@ jobs:
           BASE_PATH: "/vintazh-site"
           NEXT_PUBLIC_BASE_PATH: "/vintazh-site"
           NEXT_PUBLIC_SITE_URL: "https://galanin2004-create.github.io/vintazh-site"
+          # Адрес CRM на хостинге Рег.ру: сюда уходят брони, отсюда берётся
+          # занятость вещей. Уберёте переменную — форма снова откроет Telegram.
+          NEXT_PUBLIC_CRM_URL: "https://vintazh-crm.site-chas.ru"
         run: npm run build
 
       # Без этого файла Pages прячет папку _next и страница остаётся без стилей.
