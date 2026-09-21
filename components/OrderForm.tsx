@@ -11,11 +11,12 @@ import {
   contacts,
   formatPrice,
   HOLD_NOTE,
+  PAY_NOTE,
   PRICE_ON_REQUEST,
 } from "@/lib/brand";
 import { useUrlQuery } from "@/lib/useUrlQuery";
 import { ordersEndpoint } from "@/lib/crm";
-import { useItemState } from "./AvailabilityProvider";
+import { useItemState, usePayEnabled } from "./AvailabilityProvider";
 import Photo from "./ui/Photo";
 
 /*
@@ -26,60 +27,49 @@ import Photo from "./ui/Photo";
 
 type Delivery = "gallery" | "shipping";
 type ShipMethod = "post" | "cdek" | "yandex" | "courier";
-type Payment = "transfer" | "on_delivery" | "escrow";
 type Errors = Partial<Record<string, string>>;
-
-/** Способы расчёта. Какие из них доступны, решает служба доставки. */
-const PAYMENTS: Record<Payment, { label: string; short: string }> = {
-  transfer: { label: "Переведу до отправки", short: "перевод до отправки" },
-  on_delivery: { label: "Оплачу при получении", short: "оплата при получении" },
-  escrow: { label: "Надёжная сделка СДЭК", short: "Надёжная сделка СДЭК" },
-};
 
 /**
  * Службы доставки. Список правится здесь — форма подстроится сама.
  * Тот же список — в ship_methods() CRM, правятся вместе.
+ * Доставка включена в цену вещи, поэтому способа расчёта здесь нет:
+ * платят картой на сайте, сразу.
  */
 const SHIP_METHODS: {
   value: ShipMethod;
   label: string;
   needsPostcode: boolean;
   addressHint: string;
-  /** Срок и способ расчёта — чтобы не ходить за этим на страницу «Визит». */
+  /** Срок — чтобы не ходить за этим на страницу «Визит». */
   hint: string;
-  payments: Payment[];
 }[] = [
   {
     value: "post",
     label: "Почта России",
     needsPostcode: true,
     addressHint: "Улица, дом, квартира",
-    hint: "В любое отделение страны, 3–7 дней. При оплате на почте посылку можно вскрыть при операторе и отказаться.",
-    payments: ["transfer", "on_delivery"],
+    hint: "В любое отделение страны, 3–7 дней.",
   },
   {
     value: "cdek",
     label: "СДЭК",
     needsPostcode: false,
     addressHint: "Адрес пункта выдачи или его код",
-    hint: "До пункта выдачи или до двери, 1–3 дня. «Надёжная сделка»: деньги уходят нам после того, как вы получили и осмотрели вещь.",
-    payments: ["transfer", "escrow"],
+    hint: "До пункта выдачи или до двери, 1–3 дня.",
   },
   {
     value: "yandex",
     label: "Яндекс Доставка",
     needsPostcode: false,
     addressHint: "Адрес пункта выдачи Яндекса или постамата",
-    hint: "В пункт выдачи или постамат, обычно 1–3 дня. Только по предоплате: у Яндекса нет оплаты при получении.",
-    payments: ["transfer"],
+    hint: "В пункт выдачи или постамат, обычно 1–3 дня.",
   },
   {
     value: "courier",
     label: `Курьер по городу ${brand.city}`,
     needsPostcode: false,
     addressHint: "Улица, дом, квартира",
-    hint: "Привезём сами или курьером Яндекса в день договорённости. Стоимость обсудим при брони.",
-    payments: ["transfer", "on_delivery"],
+    hint: "Привезём сами или курьером Яндекса в день договорённости.",
   },
 ];
 
@@ -88,6 +78,7 @@ export default function OrderForm() {
   const slug = params.get("item") ?? "";
   const item = slug ? itemBySlug(slug) : undefined;
   const state = useItemState(slug, item?.sold);
+  const pay = usePayEnabled();
 
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -102,7 +93,6 @@ export default function OrderForm() {
   const [postcode, setPostcode] = useState("");
   const [region, setRegion] = useState("");
   const [address, setAddress] = useState("");
-  const [payment, setPayment] = useState<Payment>("transfer");
 
   const [errors, setErrors] = useState<Errors>({});
   const [sending, setSending] = useState(false);
@@ -127,7 +117,28 @@ export default function OrderForm() {
     );
   }
 
-  // Занятость приходит из CRM: бронировать уже отданное или отложенное нельзя.
+  // Оплата сразу, а цены нет — платить нечего: про такую вещь спрашивают в Telegram
+  if (pay && !item.price) {
+    return (
+      <div className="empty">
+        <p className="rubric">Цена уточняется</p>
+        <p className="text" style={{ maxWidth: "46ch" }}>
+          У «{item.title}» цена пока не проставлена. Напишите нам — назовём
+          и, если захотите, отложим вещь за вами.
+        </p>
+        <a
+          className="btn btn--primary"
+          href={askLink(item.title, item.number)}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Узнать цену в Telegram
+        </a>
+      </div>
+    );
+  }
+
+  // Занятость приходит из CRM: забирать уже отданное или отложенное нельзя.
   if (!done && state !== "free") {
     const sold = state === "sold";
     return (
@@ -180,6 +191,9 @@ export default function OrderForm() {
     if (shipping && digits.length < 10) {
       next.phone = "Для отправки нужен телефон: его требует служба доставки";
     }
+    if (pay && digits.length < 10) {
+      next.phone = "Для оплаты нужен телефон: на него придёт чек";
+    }
 
     if (shipping) {
       if (recipient.trim().split(/\s+/).length < 2 || recipient.trim().length < 5) {
@@ -208,7 +222,6 @@ export default function OrderForm() {
             `Отправка: ${method.label}`,
             `Получатель: ${recipient}`,
             `Адрес: ${[postcode, region, city, address].filter(Boolean).join(", ")}`,
-            `Расчёт: ${PAYMENTS[payment].short}`,
           ].join("\n")
         : `Заберу в галерее${city ? `, ${city}` : ""}`,
       comment ? `Комментарий: ${comment}` : "",
@@ -253,13 +266,17 @@ export default function OrderForm() {
                 postcode: postcode.trim(),
                 region: region.trim(),
                 address: address.trim(),
-                payment,
               }
             : {}),
         }),
       });
       const data = await response.json().catch(() => null);
 
+      if (response.ok && data?.ok && data.payUrl) {
+        // Касса выставила счёт — уводим на страницу оплаты, кнопку не отпускаем
+        window.location.assign(data.payUrl);
+        return;
+      }
       if (response.ok && data?.ok) {
         setDone({ code: data.code, holdHours: data.holdHours ?? 24 });
         return;
@@ -292,7 +309,9 @@ export default function OrderForm() {
           {item.price ? formatPrice(item.price) : PRICE_ON_REQUEST}
         </p>
         <p className="item__note" style={{ marginTop: "14px" }}>
-          {HOLD_NOTE}. Бронь бесплатная и ни к чему не обязывает.
+          {pay
+            ? `${PAY_NOTE}. Данные карты вводятся на защищённой странице ЮKassa, мы их не видим.`
+            : `${HOLD_NOTE}. Бронь бесплатная и ни к чему не обязывает.`}
         </p>
         <Link
           href={`/catalog/${item.slug}`}
@@ -394,10 +413,7 @@ export default function OrderForm() {
                       name="shipMethod"
                       value={m.value}
                       checked={shipMethod === m.value}
-                      onChange={() => {
-                        setShipMethod(m.value);
-                        if (!m.payments.includes(payment)) setPayment("transfer");
-                      }}
+                      onChange={() => setShipMethod(m.value)}
                     />
                     <span>{m.label}</span>
                   </label>
@@ -468,31 +484,9 @@ export default function OrderForm() {
               {errors.address && <span className="field__error">{errors.address}</span>}
             </div>
 
-            <fieldset className="field">
-              <legend>Как рассчитаемся</legend>
-              <div className="order__choices">
-                {method.payments.map((value) => (
-                  <label
-                    key={value}
-                    className={`choice${payment === value ? " is-on" : ""}`}
-                  >
-                    <input
-                      type="radio"
-                      name="payment"
-                      value={value}
-                      checked={payment === value}
-                      onChange={() => setPayment(value)}
-                    />
-                    <span>{PAYMENTS[value].label}</span>
-                  </label>
-                ))}
-              </div>
-              <span className="field__hint">
-                Доставку оплачиваете по тарифу службы — точную сумму назовём
-                до отправки, сверху ничего не добавляем.
-              </span>
-              {errors.payment && <span className="field__error">{errors.payment}</span>}
-            </fieldset>
+            <p className="field__hint">
+              Доставка по России включена в цену — доплат за посылку нет.
+            </p>
           </div>
         )}
 
@@ -519,7 +513,8 @@ export default function OrderForm() {
           />
           <span>
             Согласен на обработку имени, контактов и адреса, чтобы галерея
-            связалась со мной и отправила заказ.
+            связалась со мной и отправила заказ
+            {pay ? ", и на передачу платёжных данных ЮKassa для оплаты" : ""}.
           </span>
         </label>
         {errors.agreed && <span className="field__error">{errors.agreed}</span>}
@@ -528,7 +523,13 @@ export default function OrderForm() {
 
         <div className="order__actions">
           <button className="btn btn--primary" type="submit" disabled={sending}>
-            {sending ? "Отправляем…" : CTA}
+            {sending
+              ? pay
+                ? "Открываем оплату…"
+                : "Отправляем…"
+              : pay && item.price
+                ? `Оплатить ${formatPrice(item.price)}`
+                : CTA}
           </button>
           <a
             className="btn btn--ghost"

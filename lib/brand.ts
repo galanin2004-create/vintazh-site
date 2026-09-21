@@ -17,11 +17,16 @@ export const brand = {
   ],
 } as const;
 
-/** Главное действие. Бренд-бук: вместо «Купить» и «В корзину». */
-export const CTA = "Забронировать эксклюзив";
+/**
+ * Главное действие. Бренд-бук: вместо «Купить» и «В корзину» — вещь
+ * «забирают». С 21.09.2026 оплата идёт сразу при оформлении.
+ */
+export const CTA = "Забрать эксклюзив";
 export const CTA_SECOND = "Спросить о вещи в Telegram";
 export const CTA_SOLD = "Забрано · вещь ушла";
+/** Пока касса не подключена, форма принимает бронь без оплаты. */
 export const HOLD_NOTE = "Оставить за собой на 24 часа";
+export const PAY_NOTE = "Оплата картой на сайте, доставка по России включена в цену";
 
 export const contacts = {
   phone: "+7 (900) 476-26-33",
@@ -52,7 +57,7 @@ export const principles = [
 export const nav = [
   { href: "/catalog", label: "Каталог" },
   { href: "/about", label: "О галерее" },
-  { href: "/visit", label: "Визит и бронь" },
+  { href: "/visit", label: "Визит и покупка" },
   { href: "/contacts", label: "Контакты" },
 ] as const;
 

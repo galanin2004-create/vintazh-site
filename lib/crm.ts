@@ -15,6 +15,10 @@ export const crmEnabled = BASE !== "";
 
 export const ordersEndpoint = crmEnabled ? `${BASE}/api/orders` : "";
 export const availabilityEndpoint = crmEnabled ? `${BASE}/api/availability` : "";
+/** Страница возврата после оплаты спрашивает статус здесь. */
+export const payStatusEndpoint = crmEnabled ? `${BASE}/api/pay/status` : "";
+/** Платёж не прошёл — выставить новый на ту же заявку. */
+export const payRetryEndpoint = crmEnabled ? `${BASE}/api/pay/retry` : "";
 
 /** Состояние вещи с точки зрения покупателя. */
 export type ItemState = "free" | "reserved" | "sold";

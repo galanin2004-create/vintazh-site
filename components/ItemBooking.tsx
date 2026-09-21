@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import type { Item } from "@/data/items";
-import { useItemState } from "./AvailabilityProvider";
+import { useItemState, usePayEnabled } from "./AvailabilityProvider";
 import {
   CTA,
   CTA_SECOND,
   CTA_SOLD,
   HOLD_NOTE,
+  PAY_NOTE,
   askLink,
   brand,
   contacts,
@@ -39,7 +40,10 @@ export function ItemPrice({ item }: { item: Item }) {
 
 export function ItemActions({ item }: { item: Item }) {
   const state = useItemState(item.slug, item.sold);
+  const pay = usePayEnabled();
   const ask = askLink(item.title, item.number);
+  // Без цены платить нечего — про такую вещь спрашивают в Telegram
+  const payable = !pay || Boolean(item.price);
 
   return (
     <div className="item__actions">
@@ -65,7 +69,7 @@ export function ItemActions({ item }: { item: Item }) {
         </>
       )}
 
-      {state === "free" && (
+      {state === "free" && payable && (
         <>
           <Link className="btn btn--primary" href={`/order?item=${item.slug}`}>
             {CTA}
@@ -74,9 +78,31 @@ export function ItemActions({ item }: { item: Item }) {
             {CTA_SECOND}
           </a>
           <p className="item__note">
-            {HOLD_NOTE}. Бронь бесплатная: вещь снимается с витрины, и никто
-            другой её не заберёт. Смотреть в галерее — {brand.city}, по звонку
-            на {contacts.phone}.
+            {pay ? (
+              <>
+                {PAY_NOTE}. Как только оплата прошла, вещь ваша: заберёте в
+                галерее ({brand.city}) или отправим. Смотреть вживую до
+                покупки — по звонку на {contacts.phone}.
+              </>
+            ) : (
+              <>
+                {HOLD_NOTE}. Бронь бесплатная: вещь снимается с витрины, и никто
+                другой её не заберёт. Смотреть в галерее — {brand.city}, по звонку
+                на {contacts.phone}.
+              </>
+            )}
+          </p>
+        </>
+      )}
+
+      {state === "free" && !payable && (
+        <>
+          <a className="btn btn--primary" href={ask} target="_blank" rel="noreferrer">
+            Узнать цену в Telegram
+          </a>
+          <p className="item__note">
+            Цена этой вещи ещё уточняется. Напишите — назовём и, если
+            захотите, отложим её за вами.
           </p>
         </>
       )}

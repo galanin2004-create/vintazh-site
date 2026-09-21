@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import OrderForm from "@/components/OrderForm";
-import { HOLD_NOTE } from "@/lib/brand";
+import { PAY_NOTE } from "@/lib/brand";
 
 export const metadata: Metadata = {
-  title: "Бронь вещи",
-  description: "Забронировать вещь из галереи на 24 часа.",
+  title: "Оформление",
+  description: "Оплатить вещь из галереи и забрать её или получить отправкой.",
   // Страница живая только с выбранной вещью — в поиске ей делать нечего.
   robots: { index: false, follow: true },
 };
@@ -19,16 +19,15 @@ export default function OrderPage() {
           <span aria-hidden="true">·</span>
           <Link href="/catalog">Каталог</Link>
           <span aria-hidden="true">·</span>
-          <span>Бронь</span>
+          <span>Оформление</span>
         </nav>
 
         <div className="pageHead" style={{ borderBottom: 0 }}>
-          <p className="rubric">Бронь</p>
-          <h1>Оставить вещь за собой</h1>
+          <p className="rubric">Оформление</p>
+          <h1>Забрать вещь себе</h1>
           <p className="lede">
-            {HOLD_NOTE}: мы снимаем вещь с витрины и никому её не отдаём, пока
-            вы решаете. Оплаты сейчас не будет — рассчитаемся при встрече или
-            переводом перед отправкой.
+            {PAY_NOTE}. Как только деньги пришли, вещь ваша: снимаем её с
+            витрины и готовим к отправке или встрече в галерее.
           </p>
         </div>
       </div>

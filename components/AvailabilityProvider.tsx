@@ -16,9 +16,11 @@ type Availability = {
   reserved: Set<string>;
   /** false, пока ответ CRM не пришёл или её вовсе нет. */
   live: boolean;
+  /** Касса подключена: форма ведёт на оплату, а не на бронь. */
+  pay: boolean;
 };
 
-const empty: Availability = { taken: new Set(), reserved: new Set(), live: false };
+const empty: Availability = { taken: new Set(), reserved: new Set(), live: false, pay: false };
 
 const AvailabilityContext = createContext<Availability>(empty);
 
@@ -45,6 +47,7 @@ export default function AvailabilityProvider({ children }: { children: ReactNode
           taken: new Set<string>(data.taken ?? []),
           reserved: new Set<string>(data.reserved ?? []),
           live: true,
+          pay: data.pay === true,
         });
       })
       .catch(() => {
@@ -78,4 +81,9 @@ export function useItemState(slug: string, sold?: boolean): ItemState {
 
 export function useAvailabilityLive(): boolean {
   return useContext(AvailabilityContext).live;
+}
+
+/** Касса подключена — покупатель платит сразу при оформлении. */
+export function usePayEnabled(): boolean {
+  return useContext(AvailabilityContext).pay;
 }
