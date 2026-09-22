@@ -10,6 +10,7 @@ import {
 } from "react";
 import { availabilityEndpoint } from "@/lib/crm";
 import type { ItemState } from "@/lib/crm";
+import { payEnabled } from "@/lib/pay";
 
 type Availability = {
   taken: Set<string>;
@@ -20,7 +21,9 @@ type Availability = {
   pay: boolean;
 };
 
-const empty: Availability = { taken: new Set(), reserved: new Set(), live: false, pay: false };
+/* pay берётся из снимка сборки, чтобы текст не менялся на глазах у
+   посетителя; ответ CRM его уточняет, если касса появилась между сборками. */
+const empty: Availability = { taken: new Set(), reserved: new Set(), live: false, pay: payEnabled };
 
 const AvailabilityContext = createContext<Availability>(empty);
 

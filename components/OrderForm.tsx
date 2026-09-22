@@ -6,6 +6,7 @@ import { itemBySlug } from "@/data/items";
 import { label } from "@/data/taxonomy";
 import {
   CTA,
+  CTA_HOLD,
   askLink,
   brand,
   contacts,
@@ -527,9 +528,11 @@ export default function OrderForm() {
               ? pay
                 ? "Открываем оплату…"
                 : "Отправляем…"
-              : pay && item.price
-                ? `Оплатить ${formatPrice(item.price)}`
-                : CTA}
+              : pay
+                ? item.price
+                  ? `Оплатить ${formatPrice(item.price)}`
+                  : CTA
+                : CTA_HOLD}
           </button>
           <a
             className="btn btn--ghost"

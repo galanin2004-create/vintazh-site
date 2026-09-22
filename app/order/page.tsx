@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import OrderForm from "@/components/OrderForm";
-import { PAY_NOTE } from "@/lib/brand";
+import { HOLD_NOTE, PAY_NOTE } from "@/lib/brand";
+import { payEnabled } from "@/lib/pay";
 
 export const metadata: Metadata = {
   title: "Оформление",
-  description: "Оплатить вещь из галереи и забрать её или получить отправкой.",
+  description: payEnabled
+    ? "Оплатить вещь из галереи и забрать её или получить отправкой."
+    : "Оставить вещь из галереи за собой на 24 часа.",
   // Страница живая только с выбранной вещью — в поиске ей делать нечего.
   robots: { index: false, follow: true },
 };
@@ -24,10 +27,20 @@ export default function OrderPage() {
 
         <div className="pageHead" style={{ borderBottom: 0 }}>
           <p className="rubric">Оформление</p>
-          <h1>Забрать вещь себе</h1>
+          <h1>{payEnabled ? "Забрать вещь себе" : "Оставить вещь за собой"}</h1>
           <p className="lede">
-            {PAY_NOTE}. Как только деньги пришли, вещь ваша: снимаем её с
-            витрины и готовим к отправке или встрече в галерее.
+            {payEnabled ? (
+              <>
+                {PAY_NOTE}. Как только деньги пришли, вещь ваша: снимаем её с
+                витрины и готовим к отправке или встрече в галерее.
+              </>
+            ) : (
+              <>
+                {HOLD_NOTE}: мы снимаем вещь с витрины и никому её не отдаём,
+                пока вы решаете. Оплаты сейчас не будет — рассчитаемся при
+                встрече или переводом перед отправкой.
+              </>
+            )}
           </p>
         </div>
       </div>

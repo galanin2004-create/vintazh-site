@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { asset } from "@/lib/asset";
-import { brand, principles, contacts, CTA, plural } from "@/lib/brand";
+import { brand, principles, contacts, CTA, CTA_HOLD, plural } from "@/lib/brand";
+import { payEnabled } from "@/lib/pay";
 import { items, sortNewestFirst } from "@/data/items";
 import { axes } from "@/data/taxonomy";
 import ProductCard from "@/components/ProductCard";
@@ -213,17 +214,22 @@ export default function HomePage() {
                 t: "Выбор",
                 d: "Смотрите вещь в карточке: фотографии, мерки, состав, следы носки. Ничего не прячем — потёртость честнее скидки.",
               },
-              {
-                t: "Оплата",
-                d: "Нажимаете «Забрать эксклюзив» и платите картой на сайте. С этой секунды вещь ваша и снята с витрины.",
-              },
+              payEnabled
+                ? {
+                    t: "Оплата",
+                    d: "Нажимаете «Забрать эксклюзив» и платите картой на сайте. С этой секунды вещь ваша и снята с витрины.",
+                  }
+                : {
+                    t: "Бронь",
+                    d: "Нажимаете «Забронировать эксклюзив» — вещь снимается с витрины и остаётся за вами на 24 часа.",
+                  },
               {
                 t: "Получение",
                 d: "Забираете в галерее во Владимире или получаете отправкой — Почтой, Яндекс Доставкой, СДЭК. Доставка включена в цену.",
               },
               {
                 t: "Если не подошла",
-                d: "Семь дней на возврат после получения без объяснения причин. Деньги вернём на карту.",
+                d: "Семь дней на возврат после получения без объяснения причин. Деньги вернём тем же способом, каким платили.",
               },
             ].map((s, i) => (
               <Reveal key={s.t} delay={i * 80}>
@@ -257,7 +263,7 @@ export default function HomePage() {
                 style={{ display: "flex", flexWrap: "wrap", gap: "14px" }}
               >
                 <Link href="/catalog" className="btn btn--primary">
-                  {CTA}
+                  {payEnabled ? CTA : CTA_HOLD}
                 </Link>
                 <a
                   className="btn btn--onDark"

@@ -5,6 +5,7 @@ import type { Item } from "@/data/items";
 import { useItemState, usePayEnabled } from "./AvailabilityProvider";
 import {
   CTA,
+  CTA_HOLD,
   CTA_SECOND,
   CTA_SOLD,
   HOLD_NOTE,
@@ -72,7 +73,7 @@ export function ItemActions({ item }: { item: Item }) {
       {state === "free" && payable && (
         <>
           <Link className="btn btn--primary" href={`/order?item=${item.slug}`}>
-            {CTA}
+            {pay ? CTA : CTA_HOLD}
           </Link>
           <a className="btn btn--ghost" href={ask} target="_blank" rel="noreferrer">
             {CTA_SECOND}
