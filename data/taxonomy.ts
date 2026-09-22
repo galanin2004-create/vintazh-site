@@ -15,6 +15,7 @@ export const countries: Facet[] = [
   { slug: "italy", label: "Италия" },
   { slug: "france", label: "Франция" },
   { slug: "germany", label: "Германия" },
+  { slug: "austria", label: "Австрия" },
   { slug: "uk", label: "Великобритания" },
   { slug: "japan", label: "Япония" },
   { slug: "usa", label: "США" },
