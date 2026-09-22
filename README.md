@@ -11,10 +11,16 @@ https://vintazh.site-chas.ru — с 22.09.2026. Это поддомен студ
 `galanin2004-create.github.io/vintazh-site/` GitHub сам перенаправляет
 сюда.
 
-Хостинг — GitHub Pages с custom domain: в настройках Pages репозитория
-стоит `vintazh.site-chas.ru`, в зоне `site-chas.ru` (ISPmanager на Рег.ру)
-— CNAME `vintazh → galanin2004-create.github.io`. Сертификат выпускает
-GitHub сам. Деплой автоматический: любой push в `main`, команда из CRM
+Хостинг — GitHub Pages с custom domain. Нужны три вещи, без любой из них
+домен не заработает целиком:
+
+* CNAME `vintazh → galanin2004-create.github.io` в зоне `site-chas.ru`
+  (ISPmanager на Рег.ру);
+* домен в настройках Pages репозитория;
+* **файл `public/CNAME` с этим же доменом** — при сборке через Actions
+  GitHub не добавляет его сам, а без него не доводит привязку до конца и
+  не выпускает сертификат: на домене остаётся сертификат `*.github.io`,
+  и HTTPS не открывается. Деплой автоматический: любой push в `main`, команда из CRM
 (`repository_dispatch`) или ночное расписание запускает
 `.github/workflows/pages.yml`. Адрес для canonical и sitemap — переменная
 `NEXT_PUBLIC_SITE_URL` там же.
