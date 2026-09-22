@@ -39,9 +39,17 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="hero__lock">
-              <img src={asset("/logo.svg")} alt={brand.full} />
-            </div>
+            {/* Лоток с украшениями из съёмки 18.09.2026 — в золотой рамке,
+                как паспарту. Логотип в обложке не нужен: он уже в шапке. */}
+            <figure className="hero__lock hero__lock--photo">
+              <img
+                src={asset("/hero-jewelry.jpg")}
+                alt="Лоток с украшениями галереи: камеи, броши, бусы из хрусталя и перламутра"
+                width={1440}
+                height={960}
+                fetchPriority="high"
+              />
+            </figure>
           </div>
         </div>
       </section>

@@ -285,6 +285,22 @@
   width: min(360px, 100%);
 }
 
+/* Фотография в обложке: тонкое паспарту вместо логотипа */
+.hero__lock--photo {
+  padding: 10px;
+  margin: 0;
+}
+
+.hero__lock--photo img {
+  width: 100%;
+  /* height: auto обязателен: атрибут height в разметке считается заданной
+     высотой, и без этого aspect-ratio не применяется */
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  display: block;
+}
+
 .hero__body {
   display: flex;
   flex-direction: column;
