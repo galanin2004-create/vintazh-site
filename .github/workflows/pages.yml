@@ -41,15 +41,13 @@ jobs:
           CRM_URL: "https://vintazh-crm.site-chas.ru"
         run: node scripts/pull-crm-items.mjs
 
-      # Pages отдаёт сайт из подпапки /vintazh-site, поэтому нужен basePath.
-      # NEXT_PUBLIC_SITE_URL правит canonical и sitemap под этот адрес —
-      # когда появится свой домен, обе переменные убираются.
+      # Сайт живёт на своём домене (Pages с custom domain), поэтому basePath
+      # не нужен. NEXT_PUBLIC_SITE_URL правит canonical и sitemap; когда
+      # у галереи появится собственный домен — поменять здесь и в lib/site.ts.
       - name: Сборка статики
         env:
           STATIC_EXPORT: "1"
-          BASE_PATH: "/vintazh-site"
-          NEXT_PUBLIC_BASE_PATH: "/vintazh-site"
-          NEXT_PUBLIC_SITE_URL: "https://galanin2004-create.github.io/vintazh-site"
+          NEXT_PUBLIC_SITE_URL: "https://vintazh.site-chas.ru"
           # Адрес CRM на хостинге Рег.ру: сюда уходят брони, отсюда берётся
           # занятость вещей. Уберёте переменную — форма снова откроет Telegram.
           NEXT_PUBLIC_CRM_URL: "https://vintazh-crm.site-chas.ru"

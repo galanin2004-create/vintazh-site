@@ -6,13 +6,22 @@
 
 ## Где живёт
 
-https://galanin2004-create.github.io/vintazh-site/
+https://vintazh.site-chas.ru — с 22.09.2026. Это поддомен студии, пока у
+галереи нет своего домена; старый адрес
+`galanin2004-create.github.io/vintazh-site/` GitHub сам перенаправляет
+сюда.
 
-Деплой автоматический: любой push в `main` запускает
-`.github/workflows/pages.yml` — сборка статики и выкладка на GitHub Pages.
-Адрес сайта для canonical и sitemap задаётся там же переменной
-`NEXT_PUBLIC_SITE_URL`; при переезде на свой домен её и `BASE_PATH`
-нужно убрать.
+Хостинг — GitHub Pages с custom domain: в настройках Pages репозитория
+стоит `vintazh.site-chas.ru`, в зоне `site-chas.ru` (ISPmanager на Рег.ру)
+— CNAME `vintazh → galanin2004-create.github.io`. Сертификат выпускает
+GitHub сам. Деплой автоматический: любой push в `main`, команда из CRM
+(`repository_dispatch`) или ночное расписание запускает
+`.github/workflows/pages.yml`. Адрес для canonical и sitemap — переменная
+`NEXT_PUBLIC_SITE_URL` там же.
+
+Переезд на собственный домен галереи: CNAME (или A-записи GitHub) в его
+зоне, новый домен в настройках Pages, `NEXT_PUBLIC_SITE_URL` в workflow,
+`shop_url` и `allowed_origins` в конфиге CRM.
 
 ## Запуск
 
@@ -28,13 +37,13 @@ npm run build                 # обычная сборка Next.js
 STATIC_EXPORT=1 npm run build # статика в out/ — кладётся на любой хостинг
 ```
 
-Если сайт отдаётся из подпапки (например, GitHub Pages), задайте базовый путь:
+Если сайт когда-нибудь придётся отдавать из подпапки, есть базовый путь:
 
 ```bash
-BASE_PATH=/vintazh-site NEXT_PUBLIC_BASE_PATH=/vintazh-site STATIC_EXPORT=1 npm run build
+BASE_PATH=/podpapka NEXT_PUBLIC_BASE_PATH=/podpapka STATIC_EXPORT=1 npm run build
 
 # в Git Bash на Windows добавьте MSYS_NO_PATHCONV=1,
-# иначе /vintazh-site превратится в путь Windows
+# иначе /podpapka превратится в путь Windows
 ```
 
 ## Что внутри
@@ -189,9 +198,10 @@ node scripts/sync-sold.mjs --dry
 4. **Категории.** Списки в `data/taxonomy.ts` взяты из бренд-бука как
    черновые. Замените на фактический перечень; структура трёх блоков при
    этом не меняется.
-5. **Домен.** Значение по умолчанию — `vintazh-galanina.ru` в `lib/site.ts`.
-   Пока сайт стоит на GitHub Pages, адрес подменяется переменной
-   `NEXT_PUBLIC_SITE_URL` в workflow.
+5. **Домен.** Сайт на `vintazh.site-chas.ru` — поддомене студии. Значение
+   по умолчанию в `lib/site.ts` — `vintazh-galanina.ru`, оно подменяется
+   переменной `NEXT_PUBLIC_SITE_URL` в workflow. Как переехать на свой
+   домен — в разделе «Где живёт».
 6. **Адрес галереи.** На сайте написано «приезд по звонку», точный адрес
    не указан. Если адрес публичный — добавьте его в `lib/brand.ts` и на
    страницу контактов, заодно имеет смысл поставить карту.
