@@ -75,8 +75,13 @@ jobs:
             -e "ssh -i ~/.ssh/deploy -o StrictHostKeyChecking=yes" \
             out/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
 
+      # Проверяем сайт на самом сервере: снаружи домен может ещё резолвиться
+      # в старый адрес, пока не протух кеш DNS, и HTTPS ждёт сертификата.
       - name: Проверка
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
         run: |
-          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 https://vintazh.site-chas.ru/)
+          code=$(ssh -i ~/.ssh/deploy -o StrictHostKeyChecking=yes "$DEPLOY_USER@$DEPLOY_HOST"             "curl -sk -o /dev/null -w '%{http_code}' --max-time 30 --resolve vintazh.site-chas.ru:443:31.31.196.219 https://vintazh.site-chas.ru/")
           echo "главная: $code"
           test "$code" = "200"
