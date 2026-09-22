@@ -6,28 +6,29 @@
 
 ## Где живёт
 
-https://vintazh.site-chas.ru — с 22.09.2026. Это поддомен студии, пока у
-галереи нет своего домена; старый адрес
-`galanin2004-create.github.io/vintazh-site/` GitHub сам перенаправляет
-сюда.
+https://vintazh.site-chas.ru — хостинг Рег.ру, рядом с CRM
+(`~/www/vintazh.site-chas.ru`). Сертификат выпускает ISPmanager, там же
+включён редирект HTTP→HTTPS.
 
-Хостинг — GitHub Pages с custom domain. Нужны три вещи, без любой из них
-домен не заработает целиком:
+**Почему не GitHub Pages.** Сайт там стоял до 22.09.2026, но на своём
+домене не получил сертификата: проверяльщик GitHub не смог прочитать DNS
+через NS Рег.ру («Domain's DNS record could not be retrieved,
+InvalidDNSError»), хотя запись отдавали и Google, и Cloudflare, и оба
+сервера Рег.ру. Без этой проверки Pages не выпускает сертификат, и ждать
+можно бесконечно — поэтому витрина переехала на хостинг.
 
-* CNAME `vintazh → galanin2004-create.github.io` в зоне `site-chas.ru`
-  (ISPmanager на Рег.ру);
-* домен в настройках Pages репозитория;
-* **файл `public/CNAME` с этим же доменом** — при сборке через Actions
-  GitHub не добавляет его сам, а без него не доводит привязку до конца и
-  не выпускает сертификат: на домене остаётся сертификат `*.github.io`,
-  и HTTPS не открывается. Деплой автоматический: любой push в `main`, команда из CRM
-(`repository_dispatch`) или ночное расписание запускает
-`.github/workflows/pages.yml`. Адрес для canonical и sitemap — переменная
-`NEXT_PUBLIC_SITE_URL` там же.
+Сборка осталась в GitHub Actions (`.github/workflows/deploy.yml`): npm ci →
+вещи из CRM → статика → заливка `out/` по SSH через rsync → проверка, что
+главная отвечает 200. Запускается пушем в `main`, командой из CRM
+(`repository_dispatch: crm-publish`) и раз в сутки по расписанию.
 
-Переезд на собственный домен галереи: CNAME (или A-записи GitHub) в его
-зоне, новый домен в настройках Pages, `NEXT_PUBLIC_SITE_URL` в workflow,
-`shop_url` и `allowed_origins` в конфиге CRM.
+Секреты репозитория: `DEPLOY_SSH_KEY` (отдельный ключ только для выкладки,
+не основной ключ владельца), `DEPLOY_HOST`, `DEPLOY_USER`, `DEPLOY_PATH`.
+Адрес для canonical и sitemap — `NEXT_PUBLIC_SITE_URL` в workflow.
+
+Переезд на собственный домен галереи: завести сайт в ISPmanager, выпустить
+сертификат, поменять `DEPLOY_PATH` и `NEXT_PUBLIC_SITE_URL`, а в конфиге
+CRM — `shop_url` и `allowed_origins`.
 
 ## Запуск
 

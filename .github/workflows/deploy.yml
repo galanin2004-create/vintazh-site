@@ -1,0 +1,82 @@
+name: Сборка и выкладка на хостинг
+
+# Витрина живёт на хостинге Рег.ру рядом с CRM, а не на GitHub Pages:
+# GitHub не смог прочитать DNS через NS Рег.ру («InvalidDNSError») и потому
+# не выпускал сертификат для vintazh.site-chas.ru. Сертификат выдаёт
+# ISPmanager, а сюда переехала только сборка.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  # CRM дёргает это событие после «Опубликовать» в приёмке
+  repository_dispatch:
+    types: [crm-publish]
+  # Страховка, если токен GitHub в CRM не задан или сломался: раз в сутки
+  schedule:
+    - cron: "0 3 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Вещи, принятые через Telegram-бота, живут в CRM: забираем их
+      # вместе с кадрами перед сборкой. CRM молчит — сборка падает, и на
+      # хостинге остаётся прошлая версия, а не витрина без вещей.
+      - name: Вещи из CRM
+        env:
+          CRM_URL: "https://vintazh-crm.site-chas.ru"
+        run: node scripts/pull-crm-items.mjs
+
+      - name: Сборка статики
+        env:
+          STATIC_EXPORT: "1"
+          NEXT_PUBLIC_SITE_URL: "https://vintazh.site-chas.ru"
+          # Адрес CRM: сюда уходят заказы, отсюда берётся занятость вещей
+          NEXT_PUBLIC_CRM_URL: "https://vintazh-crm.site-chas.ru"
+        run: npm run build
+
+      - name: Ключ для заливки
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy
+          chmod 600 ~/.ssh/deploy
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      # --delete убирает с хостинга то, чего больше нет в сборке (ушедшие
+      # вещи, старые чанки). .htaccess живёт на сервере и в сборку не
+      # входит, поэтому исключён — иначе rsync стёр бы его.
+      - name: Заливка
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          rsync -az --delete --exclude '.htaccess' \
+            -e "ssh -i ~/.ssh/deploy -o StrictHostKeyChecking=yes" \
+            out/ "$DEPLOY_USER@$DEPLOY_HOST:$DEPLOY_PATH/"
+
+      - name: Проверка
+        run: |
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 https://vintazh.site-chas.ru/)
+          echo "главная: $code"
+          test "$code" = "200"
