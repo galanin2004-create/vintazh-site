@@ -4,6 +4,12 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # CRM дёргает это событие после «Опубликовать» в приёмке
+  repository_dispatch:
+    types: [crm-publish]
+  # Страховка, если токен GitHub в CRM не задан или сломался: раз в сутки
+  schedule:
+    - cron: "0 3 * * *"
 
 permissions:
   contents: read
@@ -26,6 +32,14 @@ jobs:
           cache: npm
 
       - run: npm ci
+
+      # Вещи, принятые через Telegram-бота, живут в CRM: забираем их
+      # вместе с кадрами перед сборкой. CRM молчит — сборка падает, и на
+      # Pages остаётся прошлая версия, а не витрина без вещей.
+      - name: Вещи из CRM
+        env:
+          CRM_URL: "https://vintazh-crm.site-chas.ru"
+        run: node scripts/pull-crm-items.mjs
 
       # Pages отдаёт сайт из подпапки /vintazh-site, поэтому нужен basePath.
       # NEXT_PUBLIC_SITE_URL правит canonical и sitemap под этот адрес —

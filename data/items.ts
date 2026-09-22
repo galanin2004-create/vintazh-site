@@ -43,7 +43,16 @@ export type Item = {
   photos?: string[];
 };
 
-export const items: Item[] = [
+/**
+ * Вещи, принятые через Telegram-бота, живут в CRM. Перед сборкой
+ * scripts/pull-crm-items.mjs забирает их в data/crm-items.json вместе
+ * с кадрами; локально файл пустой, и витрина показывает только то, что
+ * записано ниже.
+ */
+import crmItems from "./crm-items.json";
+
+/** Вещи, записанные руками: съёмки владелицы и демонстрационные позиции. */
+const staticItems: Item[] = [
   /* ——— Реальные вещи. Съёмка владелицы, папка «Японские вещи → Жакеты».
      Описания составлены по фотографиям: крой, цвет, фактура, фурнитура.
      Цена — 3500 ₽ за штуку, со слов владелицы. Состав, размер и состояние
@@ -704,6 +713,9 @@ export const items: Item[] = [
     addedAt: "2026-07-12",
   },
 ];
+
+/** Витрина целиком: сначала то, что пришло из CRM, потом записанное руками. */
+export const items: Item[] = [...(crmItems as Item[]), ...staticItems];
 
 export function itemBySlug(slug: string) {
   return items.find((i) => i.slug === slug);
