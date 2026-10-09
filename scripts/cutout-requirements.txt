@@ -1,3 +1,0 @@
-rembg[cpu]==2.0.67
-pillow
-numpy
