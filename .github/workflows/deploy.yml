@@ -46,6 +46,33 @@ jobs:
           CRM_URL: "https://vintazh-crm.site-chas.ru"
         run: node scripts/pull-crm-items.mjs
 
+      # Фон кадров из бота — нейросетью BiRefNet на коричневый, как у
+      # жилетов (scripts/cutout.py). Модель (~1 ГБ) и готовые кадры
+      # кэшируются: новый кадр — ~20 с, уже обработанный — мгновенно.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: scripts/cutout-requirements.txt
+
+      - name: Модель нейросети
+        uses: actions/cache@v4
+        with:
+          path: ~/.u2net
+          key: rembg-birefnet-general-v1
+
+      - name: Готовые кадры
+        uses: actions/cache@v4
+        with:
+          path: .cutout-cache
+          key: cutout-${{ github.run_id }}
+          restore-keys: cutout-
+
+      - name: Замена фона
+        run: |
+          pip install -q -r scripts/cutout-requirements.txt
+          python scripts/cutout.py public/crm
+
       - name: Сборка статики
         env:
           STATIC_EXPORT: "1"

@@ -8,3 +8,5 @@ next-env.d.ts
 
 # Кадры вещей из CRM — генерируются при сборке (scripts/pull-crm-items.mjs)
 /public/crm/
+# Кэш замены фона (scripts/cutout.py) — живёт в actions/cache
+.cutout-cache/
