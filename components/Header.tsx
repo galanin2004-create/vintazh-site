@@ -5,7 +5,10 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { asset } from "@/lib/asset";
 import { brand, contacts, nav } from "@/lib/brand";
-import { axes } from "@/data/taxonomy";
+import { stockedAxes } from "@/data/taxonomy";
+import { items } from "@/data/items";
+
+const axes = stockedAxes(items);
 import { Caret } from "./ui/Icons";
 
 /**

@@ -3,13 +3,14 @@ import { asset } from "@/lib/asset";
 import { brand, principles, contacts, CTA, CTA_HOLD, plural } from "@/lib/brand";
 import { payEnabled } from "@/lib/pay";
 import { items, sortNewestFirst } from "@/data/items";
-import { axes } from "@/data/taxonomy";
+import { stockedAxes } from "@/data/taxonomy";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/ui/Reveal";
 import { ArrowRight, Wave } from "@/components/ui/Icons";
 
 export default function HomePage() {
   const fresh = sortNewestFirst(items).slice(0, 8);
+  const axes = stockedAxes(items);
   const inStock = items.filter((i) => !i.sold).length;
 
   return (

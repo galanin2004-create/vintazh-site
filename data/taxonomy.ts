@@ -47,3 +47,17 @@ const byAxis: Record<Axis, Facet[]> = { country: countries, kind: kinds };
 export function label(axis: Axis, slug: string): string {
   return byAxis[axis].find((f) => f.slug === slug)?.label ?? slug;
 }
+
+/**
+ * Оси только с теми рубриками, в которых есть вещи. Меню «Подбор» и блок
+ * на главной показывают их, чтобы ссылка не вела в пустой каталог. Сам
+ * каталог берёт полные `axes`: там пустая рубрика видна, но погашена.
+ */
+export function stockedAxes(list: { country: string; kind: string }[]) {
+  return axes
+    .map((axis) => ({
+      ...axis,
+      facets: axis.facets.filter((f) => list.some((i) => i[axis.key] === f.slug)),
+    }))
+    .filter((axis) => axis.facets.length > 0);
+}
