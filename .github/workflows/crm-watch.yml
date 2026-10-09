@@ -1,0 +1,60 @@
+name: Проверка CRM и бота
+
+# Снаружи смотрим, что витрина и CRM отвечают, а опрос бота из cron и
+# суточная копия базы живы (/api/health отдаёт их возраст — backup_daily()
+# и beat_touch() в lib.php CRM). Если что-то не так, прогон падает, и
+# GitHub присылает письмо о проваленном запуске тому, кто последним менял
+# этот файл.
+#
+# GitHub запускает расписание с задержками, иногда в несколько часов —
+# это страховка, а не секундный мониторинг.
+
+on:
+  schedule:
+    - cron: "7,37 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Витрина и CRM отвечают
+        run: |
+          set -euo pipefail
+          for url in https://vintazh.site-chas.ru/ https://vintazh-crm.site-chas.ru/api/availability; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' --retry 3 --retry-delay 20 --retry-all-errors -m 30 "$url" || true)
+            echo "$code $url"
+            if [ "$code" != "200" ]; then
+              echo "::error::$url отвечает $code"
+              exit 1
+            fi
+          done
+
+      - name: Опрос бота и копия базы
+        run: |
+          set -euo pipefail
+          health=$(curl -sf --retry 3 --retry-delay 20 --retry-all-errors -m 30 https://vintazh-crm.site-chas.ru/api/health)
+          echo "$health"
+          poll=$(echo "$health" | jq -r '.poll_age // "нет"')
+          backup=$(echo "$health" | jq -r '.backup_age_hours // "нет"')
+
+          if ! echo "$health" | jq -e 'has("poll_age")' >/dev/null; then
+            echo "::warning::CRM ещё не обновлена — нет poll_age в /api/health (bash scripts/deploy.sh в vintazh-crm)"
+            exit 0
+          fi
+
+          fail=0
+          # Опрос запускается раз в минуту и живёт ~50 секунд; 15 минут тишины — cron встал
+          if [ "$poll" = "нет" ] || [ "$poll" -gt 900 ]; then
+            echo "::error::Опрос бота из cron молчит (poll_age=$poll с). Проверьте crontab на хостинге и ~/logs/tg-poll.log"
+            fail=1
+          fi
+          # Копия снимается раз в сутки; больше 30 часов — что-то сломалось
+          if [ "$backup" = "нет" ] || [ "$backup" -gt 30 ]; then
+            echo "::error::Резервной копии базы нет больше суток (backup_age_hours=$backup)"
+            fail=1
+          fi
+          exit $fail
