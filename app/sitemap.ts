@@ -6,10 +6,10 @@ import { SITE } from "@/lib/site";
 export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const pages = ["", "/catalog", "/about", "/visit", "/contacts"].map((path) => ({
+  const pages = ["", "/catalog", "/about", "/visit", "/contacts", "/oferta", "/privacy"].map((path) => ({
     url: `${SITE}${path}`,
     changeFrequency: path === "/catalog" ? ("weekly" as const) : ("monthly" as const),
-    priority: path === "" ? 1 : 0.8,
+    priority: path === "" ? 1 : path === "/oferta" || path === "/privacy" ? 0.3 : 0.8,
   }));
 
   const cards = items.map((item) => ({

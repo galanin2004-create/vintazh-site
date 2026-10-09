@@ -518,7 +518,16 @@ export default function OrderForm() {
           <span>
             Согласен на обработку имени, контактов и адреса, чтобы галерея
             связалась со мной и отправила заказ
-            {pay ? ", и на передачу платёжных данных ЮKassa для оплаты" : ""}.
+            {pay ? ", и на передачу платёжных данных ЮKassa для оплаты" : ""}, —
+            по{" "}
+            <Link href="/privacy" target="_blank">
+              политике обработки данных
+            </Link>
+            . С условиями{" "}
+            <Link href="/oferta" target="_blank">
+              оферты
+            </Link>{" "}
+            согласен.
           </span>
         </label>
         {errors.agreed && <span className="field__error">{errors.agreed}</span>}

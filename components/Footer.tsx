@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { asset } from "@/lib/asset";
 import { brand, contacts, nav } from "@/lib/brand";
+import { seller } from "@/lib/legal";
 
 export default function Footer() {
   const year = 2026;
@@ -46,6 +47,13 @@ export default function Footer() {
         <div className="footer__bottom">
           <span>
             {brand.lockup} · {brand.city}
+          </span>
+          <span className="footer__legal">
+            <Link href="/oferta">Оферта</Link>
+            <Link href="/privacy">Персональные данные</Link>
+            <span>
+              {seller.name}, ИНН {seller.inn}
+            </span>
           </span>
           <span>© {year}</span>
         </div>
