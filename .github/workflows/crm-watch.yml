@@ -52,6 +52,13 @@ jobs:
             echo "::error::Опрос бота из cron молчит (poll_age=$poll с). Проверьте crontab на хостинге и ~/logs/tg-poll.log"
             fail=1
           fi
+          # cron жив, но с хостинга не достучаться до api.telegram.org — бот молчит.
+          # Поле tg_age появилось позже poll_age: пока его нет, не проверяем
+          tg=$(echo "$health" | jq -r 'if has("tg_age") then (.tg_age // "нет") else "пропуск" end')
+          if [ "$tg" != "пропуск" ] && { [ "$tg" = "нет" ] || [ "$tg" -gt 1800 ]; }; then
+            echo "::error::Telegram не отвечает серверу CRM дольше 30 минут (tg_age=$tg с) — бот приёмки и уведомления не работают"
+            fail=1
+          fi
           # Копия снимается раз в сутки; больше 30 часов — что-то сломалось
           if [ "$backup" = "нет" ] || [ "$backup" -gt 30 ]; then
             echo "::error::Резервной копии базы нет больше суток (backup_age_hours=$backup)"
