@@ -3,6 +3,7 @@ import { Manrope, Prata } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CursorGlow from "@/components/ui/CursorGlow";
+import Metrika from "@/components/Metrika";
 import AvailabilityProvider from "@/components/AvailabilityProvider";
 import { brand, contacts } from "@/lib/brand";
 import { SITE } from "@/lib/site";
@@ -73,6 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           К содержанию
         </a>
         <CursorGlow />
+        <Metrika />
         <AvailabilityProvider>
           <Header />
           <main id="main">{children}</main>

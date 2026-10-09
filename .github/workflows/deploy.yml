@@ -52,6 +52,9 @@ jobs:
           NEXT_PUBLIC_SITE_URL: "https://vintazh.site-chas.ru"
           # Адрес CRM: сюда уходят заказы, отсюда берётся занятость вещей
           NEXT_PUBLIC_CRM_URL: "https://vintazh-crm.site-chas.ru"
+          # Номер счётчика Яндекс Метрики. Пусто — счётчика на сайте нет
+          # (lib/metrika.ts). Цели заводить по списку оттуда же.
+          NEXT_PUBLIC_YM_ID: ""
         run: npm run build
 
       - name: Ключ для заливки

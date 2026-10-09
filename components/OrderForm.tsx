@@ -16,6 +16,7 @@ import {
   PRICE_ON_REQUEST,
 } from "@/lib/brand";
 import { useUrlQuery } from "@/lib/useUrlQuery";
+import { goal } from "@/lib/metrika";
 import { ordersEndpoint } from "@/lib/crm";
 import { useItemState, usePayEnabled } from "./AvailabilityProvider";
 import Photo from "./ui/Photo";
@@ -275,10 +276,12 @@ export default function OrderForm() {
 
       if (response.ok && data?.ok && data.payUrl) {
         // Касса выставила счёт — уводим на страницу оплаты, кнопку не отпускаем
+        goal("pay_start");
         window.location.assign(data.payUrl);
         return;
       }
       if (response.ok && data?.ok) {
+        goal("order_sent");
         setDone({ code: data.code, holdHours: data.holdHours ?? 24 });
         return;
       }

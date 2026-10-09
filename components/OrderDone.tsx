@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { contacts, formatPrice } from "@/lib/brand";
 import { payRetryEndpoint, payStatusEndpoint } from "@/lib/crm";
 import { useUrlQuery } from "@/lib/useUrlQuery";
+import { goal } from "@/lib/metrika";
 
 /*
   Страница, на которую ЮKassa возвращает человека после оплаты.
@@ -28,6 +29,12 @@ export default function OrderDone() {
   const key = params.get("key") ?? "";
 
   const [status, setStatus] = useState<Status>("checking");
+
+  // Цель Метрики «оплачено» — один раз, когда страница увидела оплату
+  useEffect(() => {
+    if (status === "paid") goal("paid");
+  }, [status]);
+
   const [info, setInfo] = useState<Info | null>(null);
   const [retrying, setRetrying] = useState(false);
   const [retryError, setRetryError] = useState<string | null>(null);
