@@ -6,14 +6,16 @@ import { ArrowRight } from "@/components/ui/Icons";
 
 export const metadata: Metadata = {
   title: "Контакты",
-  description: `Телефон, Telegram и VK галереи «Винтаж» во Владимире.`,
+  description: `Адрес, часы работы, телефон и Telegram галереи «Винтаж»: ${brand.city}, ${contacts.address}.`,
 };
 
 const rows = [
+  { key: "Адрес", value: `${brand.city}, ${contacts.address}`, href: contacts.mapHref },
+  { key: "Часы", value: contacts.hours[0].toUpperCase() + contacts.hours.slice(1) },
   { key: "Телефон", value: contacts.phone, href: contacts.phoneHref },
   { key: "Telegram", value: contacts.telegram, href: contacts.telegramHref },
   { key: "VK", value: contacts.vk, href: contacts.vkHref },
-  { key: "Город", value: brand.city },
+  { key: "Отзывы", value: `Яндекс Карты · ${contacts.rating}`, href: contacts.mapHref },
 ];
 
 export default function ContactsPage() {
@@ -31,7 +33,7 @@ export default function ContactsPage() {
           <h1>Где нас найти</h1>
           <p className="lede">
             Быстрее всего — Telegram: там же присылаем видео вещи, если приехать
-            не получается. По телефону договариваемся о времени визита.
+            не получается. Галерея открыта {contacts.hours}, без записи.
           </p>
         </div>
       </div>
@@ -72,11 +74,11 @@ export default function ContactsPage() {
             <Reveal>
               <div className="head">
                 <p className="rubric">Визит</p>
-                <h2>Приезд по звонку</h2>
+                <h2>Приходите в галерею</h2>
                 <p className="text">
-                  Галерея во Владимире. Точный адрес и время встречи называем при
-                  созвоне — так мы успеваем достать отложенную вещь и
-                  подготовить примерочную.
+                  {brand.city}, {contacts.address}. Открыто {contacts.hours}.
+                  Едете за конкретной вещью — предупредите в Telegram или по
+                  телефону, и мы придержим её к вашему приходу.
                 </p>
                 <Link href="/visit" className="link">
                   Как проходит визит

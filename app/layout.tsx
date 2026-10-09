@@ -55,8 +55,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     name: brand.full,
     description: brand.formula,
     telephone: contacts.phone,
-    address: { "@type": "PostalAddress", addressLocality: brand.city, addressCountry: "RU" },
-    sameAs: [contacts.vkHref, contacts.telegramHref],
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: contacts.address,
+      addressLocality: brand.city,
+      addressCountry: "RU",
+    },
+    openingHours: contacts.openingHours,
+    hasMap: contacts.mapHref,
+    sameAs: [contacts.vkHref, contacts.telegramHref, contacts.mapHref],
   };
 
   return (

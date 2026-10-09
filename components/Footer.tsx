@@ -36,7 +36,10 @@ export default function Footer() {
             <a href={contacts.vkHref} target="_blank" rel="noreferrer">
               VK {contacts.vk}
             </a>
-            <span>{brand.city}</span>
+            <a href={contacts.mapHref} target="_blank" rel="noreferrer">
+              {brand.city}, {contacts.address}
+            </a>
+            <span>Открыто {contacts.hours}</span>
           </div>
         </div>
 

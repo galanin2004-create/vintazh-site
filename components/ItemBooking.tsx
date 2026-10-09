@@ -83,13 +83,13 @@ export function ItemActions({ item }: { item: Item }) {
               <>
                 {PAY_NOTE}. Как только оплата прошла, вещь ваша: заберёте в
                 галерее ({brand.city}) или отправим. Смотреть вживую до
-                покупки — по звонку на {contacts.phone}.
+                покупки — {contacts.address}, {contacts.hours}.
               </>
             ) : (
               <>
                 {HOLD_NOTE}. Бронь бесплатная: вещь снимается с витрины, и никто
-                другой её не заберёт. Смотреть в галерее — {brand.city}, по звонку
-                на {contacts.phone}.
+                другой её не заберёт. Смотреть в галерее — {brand.city},{" "}
+                {contacts.address}, {contacts.hours}.
               </>
             )}
           </p>
