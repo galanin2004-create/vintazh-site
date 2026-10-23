@@ -20,6 +20,8 @@ export const countries: Facet[] = [
   { slug: "japan", label: "Япония" },
   { slug: "usa", label: "США" },
   { slug: "ussr", label: "СССР" },
+  // Когда владелица знает только «Европа», без конкретной страны
+  { slug: "europe", label: "Европа" },
   { slug: "other", label: "Другие" },
 ];
 
