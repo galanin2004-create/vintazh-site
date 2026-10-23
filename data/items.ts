@@ -68,7 +68,8 @@ const staticItems: Item[] = [
     story:
       "Тёмно-синяя вязка, на груди — клин из гладкой голубой вставки, рельефных полос с блестящей нитью, золотистой и зелёной отделки.",
     addedAt: "2026-10-23",
-    photos: ["/items/dzhemper-v-vyrez-temno-siniy/1.jpg"],
+    // Первым — на манекене (после нейросети), вторым — разложенный
+    photos: ["/items/dzhemper-v-vyrez-temno-siniy/2.jpg", "/items/dzhemper-v-vyrez-temno-siniy/1.jpg"],
   },
 
   /* ——— Платье, прислано 23.10.2026. «Бавария, вышивка, 3800» — со слов
