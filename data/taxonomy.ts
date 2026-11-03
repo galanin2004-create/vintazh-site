@@ -37,6 +37,7 @@ export const kinds: Facet[] = [
   { slug: "shoes", label: "Обувь" },
   { slug: "hats", label: "Аксессуары и шляпы" },
   { slug: "jewelry", label: "Украшения" },
+  { slug: "interior", label: "Предметы интерьера" },
 ];
 
 export const axes: { key: Axis; title: string; index: string; facets: Facet[] }[] = [
