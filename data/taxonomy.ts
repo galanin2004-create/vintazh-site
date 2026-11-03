@@ -30,6 +30,7 @@ export const kinds: Facet[] = [
   { slug: "suits", label: "Пиджаки и костюмы" },
   { slug: "waistcoats", label: "Жилеты" },
   { slug: "dresses", label: "Платья" },
+  { slug: "skirts", label: "Юбки" },
   { slug: "knitwear", label: "Трикотаж" },
   { slug: "shirts", label: "Рубашки и блузы" },
   { slug: "fur-leather", label: "Мех и кожа" },
