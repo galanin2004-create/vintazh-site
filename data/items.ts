@@ -39,6 +39,8 @@ export type Item = {
   /** Дополнительные метки поверх фото. «Один экземпляр» ставится всегда. */
   marks?: string[];
   sold?: boolean;
+  /** Стекло, фарфор, зеркала: отправка по договорённости, а не «включена в цену». */
+  fragile?: boolean;
   /** Для сортировки «сначала новое». */
   addedAt: string;
   photos?: string[];
@@ -60,6 +62,7 @@ const staticItems: Item[] = [
      галереи, кадры 1 и 2 подогнаны под 3:4 размытым полем по бокам. */
   {
     slug: "zerkalo-neorokoko-florenciya",
+    fragile: true,
     title: "Овальное зеркало в стиле неорококо, Флоренция",
     country: "italy",
     kind: "interior",
@@ -262,6 +265,7 @@ const staticItems: Item[] = [
      (синее дно на нём темнее настоящего), 2 и 3 — снимки из галереи. */
   {
     slug: "press-pape-muranskoe-steklo",
+    fragile: true,
     title: "Пресс-папье из муранского стекла, белый цветок",
     country: "italy",
     kind: "interior",
@@ -307,6 +311,7 @@ const staticItems: Item[] = [
      снимки из галереи. */
   {
     slug: "shkatulka-lamart-satsuma",
+    fragile: true,
     title: "Круглая шкатулка Lamart в стиле Сацума",
     country: "italy",
     kind: "interior",
@@ -327,6 +332,7 @@ const staticItems: Item[] = [
      не присланы. Кадр 1 — после нейросети, кадр 2 — снимок из галереи. */
   {
     slug: "vaza-bavaria-farfor",
+    fragile: true,
     title: "Ваза с крышкой Bavaria, кремовый фарфор",
     country: "germany",
     era: "1949–1995",
@@ -345,6 +351,7 @@ const staticItems: Item[] = [
      (стекло на нём чуть светлее настоящего), кадр 2 — снимок из галереи. */
   {
     slug: "lampy-para-bronza-steklo",
+    fragile: true,
     title: "Пара электрических керосинок, бронза и янтарное стекло",
     country: "italy",
     kind: "interior",

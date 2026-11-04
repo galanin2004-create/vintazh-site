@@ -13,6 +13,7 @@ import {
   formatPrice,
   HOLD_NOTE,
   PAY_NOTE,
+  PAY_NOTE_FRAGILE,
   PRICE_ON_REQUEST,
 } from "@/lib/brand";
 import { useUrlQuery } from "@/lib/useUrlQuery";
@@ -314,7 +315,7 @@ export default function OrderForm() {
         </p>
         <p className="item__note" style={{ marginTop: "14px" }}>
           {pay
-            ? `${PAY_NOTE}. Данные карты вводятся на защищённой странице ЮKassa, мы их не видим.`
+            ? `${item.fragile ? PAY_NOTE_FRAGILE : PAY_NOTE}. Данные карты вводятся на защищённой странице ЮKassa, мы их не видим.`
             : `${HOLD_NOTE}. Бронь бесплатная и ни к чему не обязывает.`}
         </p>
         <Link
@@ -489,7 +490,9 @@ export default function OrderForm() {
             </div>
 
             <p className="field__hint">
-              Доставка по России включена в цену — доплат за посылку нет.
+              {item.fragile
+                ? "Отправка хрупких вещей — по договорённости, напишите нам до оплаты."
+                : "Доставка по России включена в цену — доплат за посылку нет."}
             </p>
           </div>
         )}

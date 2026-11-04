@@ -10,6 +10,7 @@ import {
   CTA_SOLD,
   HOLD_NOTE,
   PAY_NOTE,
+  PAY_NOTE_FRAGILE,
   askLink,
   brand,
   contacts,
@@ -81,7 +82,7 @@ export function ItemActions({ item }: { item: Item }) {
           <p className="item__note">
             {pay ? (
               <>
-                {PAY_NOTE}. Как только оплата прошла, вещь ваша: заберёте в
+                {item.fragile ? PAY_NOTE_FRAGILE : PAY_NOTE}. Как только оплата прошла, вещь ваша: заберёте в
                 галерее ({brand.city}) или отправим. Смотреть вживую до
                 покупки — {contacts.address}, {contacts.hours}.
               </>
