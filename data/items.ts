@@ -56,6 +56,30 @@ import crmItems from "./crm-items.json";
 
 /** Вещи, записанные руками: съёмки владелицы. */
 const staticItems: Item[] = [
+  /* ——— Вешалка, прислана владелицей. Италия, бронза, дерево, примерно
+     1900–1920-е, 45 000 ₽ — с её текста. Высота не названа. Снимки из
+     галереи, кадры 1 и 2 подогнаны под 3:4 размытым полем по бокам; одежда
+     на них — для показа. */
+  {
+    slug: "veshalka-antikvarnaya-kariatidy",
+    title: "Антикварная вешалка с бронзовыми кариатидами",
+    country: "italy",
+    kind: "interior",
+    price: 45000,
+    material: "Бронза, дерево",
+    story:
+      "Напольная вешалка, начало XX века (примерно 1900–1920-е годы). Основание — три бронзовые кариатиды с античными профилями, винтовая ножка из дерева, наверху бронзовый купол с рожками. Одежда на кадрах в цену не входит.",
+    marks: ["Антиквариат"],
+    addedAt: "2026-11-04",
+    photos: [
+      "/items/veshalka-antikvarnaya-kariatidy/1.jpg",
+      "/items/veshalka-antikvarnaya-kariatidy/2.jpg",
+      "/items/veshalka-antikvarnaya-kariatidy/3.jpg",
+      "/items/veshalka-antikvarnaya-kariatidy/4.jpg",
+      "/items/veshalka-antikvarnaya-kariatidy/5.jpg",
+    ],
+  },
+
   /* ——— Зеркало, прислано владелицей. Флоренция, вторая половина XX века,
      неорококо, лепнина (гипс/композит), золочение, ручная роспись, высота
      около 85 см, мелкие сходы краски, 32 500 ₽ — с её текста. Снимки из
@@ -71,7 +95,7 @@ const staticItems: Item[] = [
     size: "Высота около 85 см",
     story:
       "Овальное зеркало в стиле неорококо, флорентийская школа, вторая половина XX века. Лепнина с золочением и ручной росписью: завитки, ажурный рельеф, алые розы. Высота около 85 см. Встречаются мелкие сходы краски.",
-    addedAt: "2026-11-05",
+    addedAt: "2026-11-04",
     photos: [
       "/items/zerkalo-neorokoko-florenciya/1.jpg",
       "/items/zerkalo-neorokoko-florenciya/2.jpg",
@@ -93,7 +117,7 @@ const staticItems: Item[] = [
     material: "Перламутр, серебро",
     story:
       "Круглые бусины из перламутра с природными белыми разводами и мягким переливом. Рисунок у каждой бусины свой. Застёжка серебряная.",
-    addedAt: "2026-11-05",
+    addedAt: "2026-11-04",
     photos: [
       "/items/busy-perlamutr-serebryanaya-zastezhka/4.jpg",
       "/items/busy-perlamutr-serebryanaya-zastezhka/1.jpg",
@@ -114,7 +138,7 @@ const staticItems: Item[] = [
     material: "С серебром, нефрит",
     story:
       "Лимитированный выпуск Swank: клюшка для гольфа с серебром и шарик из нефрита. Подойдёт для галстука, рубашки, шарфа или ворота жакета. В родной коробочке, старенькой, со следами времени.",
-    addedAt: "2026-11-05",
+    addedAt: "2026-11-04",
     photos: ["/items/zazhim-swank-klyushka-nefrit/2.jpg", "/items/zazhim-swank-klyushka-nefrit/1.jpg"],
   },
 
