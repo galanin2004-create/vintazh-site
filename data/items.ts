@@ -57,9 +57,9 @@ import crmItems from "./crm-items.json";
 /** Вещи, записанные руками: съёмки владелицы. */
 const staticItems: Item[] = [
   /* ——— Вешалка, прислана владелицей. Италия, бронза, дерево, примерно
-     1900–1920-е, 45 000 ₽ — с её текста. Высота не названа. Снимки из
-     галереи, кадры 1 и 2 подогнаны под 3:4 размытым полем по бокам; одежда
-     на них — для показа. */
+     1900–1920-е, 45 000 ₽ — с её текста. Высота не названа. Первым кадр после
+     нейросети (6.jpg), затем снимки из галереи: 1 и 2 подогнаны под 3:4
+     размытым полем по бокам, одежда на них — для показа. */
   {
     slug: "veshalka-antikvarnaya-kariatidy",
     title: "Антикварная вешалка с бронзовыми кариатидами",
@@ -72,6 +72,7 @@ const staticItems: Item[] = [
     marks: ["Антиквариат"],
     addedAt: "2026-11-04",
     photos: [
+      "/items/veshalka-antikvarnaya-kariatidy/6.jpg",
       "/items/veshalka-antikvarnaya-kariatidy/1.jpg",
       "/items/veshalka-antikvarnaya-kariatidy/2.jpg",
       "/items/veshalka-antikvarnaya-kariatidy/3.jpg",
