@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { items, itemBySlug } from "@/data/items";
+import { liveItems } from "@/lib/sold";
 import { label } from "@/data/taxonomy";
 import { brand } from "@/lib/brand";
 import { ItemPrice, ItemActions } from "@/components/ItemBooking";
@@ -32,8 +33,8 @@ export default async function ItemPage({ params }: Params) {
   const item = itemBySlug(slug);
   if (!item) notFound();
 
-  const related = items
-    .filter((i) => i.slug !== item.slug && !i.sold)
+  const related = liveItems
+    .filter((i) => i.slug !== item.slug)
     .map((i) => ({
       item: i,
       score:

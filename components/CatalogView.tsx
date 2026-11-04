@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { items as allItems, type Item } from "@/data/items";
+import { type Item } from "@/data/items";
+import { liveItems as allItems, soldItems } from "@/lib/sold";
 import { axes, label, type Axis } from "@/data/taxonomy";
 import { useUrlQuery, setUrlQuery } from "@/lib/useUrlQuery";
 import { plural } from "@/lib/brand";
@@ -39,10 +40,9 @@ export default function CatalogView() {
     });
 
   const filtered = useMemo(() => {
+    // Проданного здесь нет вовсе — оно живёт на странице «Уже куплено»
     const list = allItems.filter((i) => matches(i));
     return list.sort((a, b) => {
-      // Проданное всегда в конце: витрина показывает то, что можно забрать.
-      if (!!a.sold !== !!b.sold) return a.sold ? 1 : -1;
       if (sort === "price-asc" || sort === "price-desc") {
         // Вещи без цены не участвуют в сравнении и уходят в конец.
         if (!a.price || !b.price) return (a.price ? 0 : 1) - (b.price ? 0 : 1);
@@ -192,6 +192,13 @@ export default function CatalogView() {
         <p className="catalog__note">
           Не нашли своё — <Link href="/contacts">напишите нам</Link>, поступления
           бывают каждую неделю.
+          {soldItems.length > 0 && (
+            <>
+              {" "}
+              А <Link href="/sold">{soldItems.length} {plural(soldItems.length)}</Link>{" "}
+              уже нашли владельца — их можно посмотреть в архиве.
+            </>
+          )}
         </p>
       </div>
     </div>

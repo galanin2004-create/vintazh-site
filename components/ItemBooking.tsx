@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { Item } from "@/data/items";
 import { useItemState, usePayEnabled } from "./AvailabilityProvider";
+import { isSold } from "@/lib/sold";
 import {
   CTA,
   CTA_HOLD,
@@ -29,7 +30,9 @@ import {
 */
 
 export function ItemPrice({ item }: { item: Item }) {
-  const state = useItemState(item.slug, item.sold);
+  // Снимок сборки — основа: если CRM не ответит, проданная вещь не должна
+  // выглядеть доступной. Живой ответ только уточняет свежие продажи.
+  const state = useItemState(item.slug, isSold(item));
 
   if (state === "sold") {
     return <p className="item__price item__price--sold">{CTA_SOLD}</p>;
@@ -41,7 +44,7 @@ export function ItemPrice({ item }: { item: Item }) {
 }
 
 export function ItemActions({ item }: { item: Item }) {
-  const state = useItemState(item.slug, item.sold);
+  const state = useItemState(item.slug, isSold(item));
   const pay = usePayEnabled();
   const ask = askLink(item.title, item.number);
   // Без цены платить нечего — про такую вещь спрашивают в Telegram
@@ -55,6 +58,11 @@ export function ItemActions({ item }: { item: Item }) {
           <a className="btn btn--ghost" href={ask} target="_blank" rel="noreferrer">
             Найти похожую
           </a>
+          <p className="item__note">
+            Эта вещь нашла владельца и переехала в{" "}
+            <Link href="/sold">«Уже куплено»</Link>. Страница остаётся: вещь
+            была одна, и пусть её видно.
+          </p>
         </>
       )}
 

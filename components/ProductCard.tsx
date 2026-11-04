@@ -5,6 +5,7 @@ import type { Item } from "@/data/items";
 import { label } from "@/data/taxonomy";
 import { formatPrice, CTA_SOLD, PRICE_ON_REQUEST } from "@/lib/brand";
 import { useItemState } from "./AvailabilityProvider";
+import { isSold } from "@/lib/sold";
 import Photo from "./ui/Photo";
 import { ItemMarks } from "./ui/Mark";
 
@@ -16,18 +17,32 @@ import { ItemMarks } from "./ui/Mark";
 export default function ProductCard({
   item,
   priority = false,
+  sold = false,
 }: {
   item: Item;
   priority?: boolean;
+  /** Карточка в архиве: вещь ушла, спрашивать CRM незачем. */
+  sold?: boolean;
 }) {
-  const state = useItemState(item.slug, item.sold);
+  const live = useItemState(item.slug, isSold(item));
+  const state = sold ? "sold" : live;
   const meta = `${label("country", item.country)} · ${label("kind", item.kind)}`;
   const spec = [item.material, item.size ? `размер ${item.size}` : null]
     .filter(Boolean)
     .join(" · ");
 
   return (
-    <article className={`card${state === "sold" ? " card--sold" : ""}`}>
+    <article
+      className={[
+        "card",
+        state === "sold" ? "card--sold" : "",
+        // В архиве фото показываем в полную силу: там вся суть — увидеть,
+        // какой вещь была, а приглушение работало бы против этого.
+        sold ? "card--archive" : "",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <div className="card__frame">
         <div className="card__marks">
           <ItemMarks item={item} compact />

@@ -73,10 +73,14 @@ if (!availability?.ok) {
   console.error("CRM не ответила на /api/availability");
   process.exit(1);
 }
-writeFileSync(metaOut, JSON.stringify({ pay: availability.pay === true }, null, 2) + "\n");
+// taken — вещи, которые уже забрали: из них собирается «Уже куплено».
+// Список нужен на сборке, иначе архив пришлось бы собирать в браузере.
+const sold = Array.isArray(availability.taken) ? availability.taken : [];
+writeFileSync(metaOut, JSON.stringify({ pay: availability.pay === true, sold }, null, 2) + "\n");
 console.log(availability.pay === true
   ? "Касса подключена — тексты про оплату картой"
   : "Кассы нет — тексты про бесплатную бронь");
+console.log("Уже куплено по данным CRM: " + sold.length);
 
 writeFileSync(out, JSON.stringify(items, null, 2) + "\n");
 console.log(`Из CRM: ${items.length} вещей → ${out}`);

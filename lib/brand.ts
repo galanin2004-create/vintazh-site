@@ -71,6 +71,7 @@ export const principles = [
 
 export const nav = [
   { href: "/catalog", label: "Каталог" },
+  { href: "/sold", label: "Уже куплено" },
   { href: "/about", label: "О галерее" },
   // Пока касса не подключена, раздел называется «Визит и бронь»
   { href: "/visit", label: payEnabled ? "Визит и покупка" : "Визит и бронь" },

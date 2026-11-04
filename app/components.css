@@ -548,6 +548,11 @@
   opacity: 0.55;
 }
 
+/* Страница «Уже куплено»: вещь ушла, но смотреть на неё должно быть приятно */
+.card--archive .card__media {
+  opacity: 1;
+}
+
 .card__link::after {
   content: "";
   position: absolute;

@@ -20,6 +20,7 @@ import { useUrlQuery } from "@/lib/useUrlQuery";
 import { goal } from "@/lib/metrika";
 import { ordersEndpoint } from "@/lib/crm";
 import { useItemState, usePayEnabled } from "./AvailabilityProvider";
+import { isSold } from "@/lib/sold";
 import Photo from "./ui/Photo";
 
 /*
@@ -80,7 +81,7 @@ export default function OrderForm() {
   const params = useUrlQuery();
   const slug = params.get("item") ?? "";
   const item = slug ? itemBySlug(slug) : undefined;
-  const state = useItemState(slug, item?.sold);
+  const state = useItemState(slug, item ? isSold(item) : undefined);
   const pay = usePayEnabled();
 
   const [name, setName] = useState("");

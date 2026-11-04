@@ -2,16 +2,18 @@ import Link from "next/link";
 import { asset } from "@/lib/asset";
 import { brand, principles, contacts, CTA, CTA_HOLD, plural } from "@/lib/brand";
 import { payEnabled } from "@/lib/pay";
-import { items, sortNewestFirst } from "@/data/items";
+import { sortNewestFirst } from "@/data/items";
+import { liveItems } from "@/lib/sold";
 import { stockedAxes } from "@/data/taxonomy";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/ui/Reveal";
 import { ArrowRight, Wave } from "@/components/ui/Icons";
 
 export default function HomePage() {
-  const fresh = sortNewestFirst(items).slice(0, 8);
-  const axes = stockedAxes(items);
-  const inStock = items.filter((i) => !i.sold).length;
+  // Проданное на главную не выносим: его место — в «Уже куплено»
+  const fresh = sortNewestFirst(liveItems).slice(0, 8);
+  const axes = stockedAxes(liveItems);
+  const inStock = liveItems.length;
 
   return (
     <>
