@@ -56,7 +56,8 @@ import crmItems from "./crm-items.json";
 const staticItems: Item[] = [
   /* ——— Бусы, присланы владелицей. Япония, перламутр, серебряная застёжка,
      4300 ₽ — с её слов; проба застёжки не присылалась, длина не названа.
-     Пока только снимки из галереи; кадр после нейросети поставить первым. */
+     Первым кадр после нейросети (3.jpg, дерево дотянуто вниз; белые
+     разводы на нём мягче настоящих), затем снимки из галереи. */
   {
     slug: "busy-perlamutr-serebryanaya-zastezhka",
     title: "Бусы из перламутра с серебряной застёжкой",
@@ -68,6 +69,7 @@ const staticItems: Item[] = [
       "Круглые бусины из перламутра с природными белыми разводами и мягким переливом. Рисунок у каждой бусины свой. Застёжка серебряная.",
     addedAt: "2026-11-05",
     photos: [
+      "/items/busy-perlamutr-serebryanaya-zastezhka/3.jpg",
       "/items/busy-perlamutr-serebryanaya-zastezhka/1.jpg",
       "/items/busy-perlamutr-serebryanaya-zastezhka/2.jpg",
     ],
