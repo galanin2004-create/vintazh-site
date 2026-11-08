@@ -56,6 +56,30 @@ import crmItems from "./crm-items.json";
 
 /** Вещи, записанные руками: съёмки владелицы. */
 const staticItems: Item[] = [
+  /* ——— Жакет, прислан владелицей. С бирки: ручная работа, шерсть, 8300 ₽.
+     Страна и размер не названы, валяние — по кадру. Пока только снимки
+     из галереи; кадр после нейросети поставить первым. */
+  {
+    slug: "zhaket-valyanyy-ruchnaya-rabota",
+    title: "Валяный жакет ручной работы с цветами",
+    country: "other",
+    kind: "suits",
+    price: 8300,
+    material: "Шерсть",
+    story:
+      "Жакет из валяной шерсти ручной работы: тёмно-зелёное полотно с ввалянными цветами — красными, сиреневыми, жёлтыми — и салатовыми стеблями. Воротник-стойка, баска, застёжка на петли с металлическими пуговицами-спиралями.",
+    marks: ["Ручная работа"],
+    addedAt: "2026-11-08",
+    photos: [
+      "/items/zhaket-valyanyy-ruchnaya-rabota/1.jpg",
+      "/items/zhaket-valyanyy-ruchnaya-rabota/2.jpg",
+      "/items/zhaket-valyanyy-ruchnaya-rabota/3.jpg",
+      "/items/zhaket-valyanyy-ruchnaya-rabota/4.jpg",
+      "/items/zhaket-valyanyy-ruchnaya-rabota/5.jpg",
+      "/items/zhaket-valyanyy-ruchnaya-rabota/6.jpg",
+    ],
+  },
+
   /* ——— Жакет, прислан владелицей. С бирки: твид, Италия, ткань Loro Piana,
      шерсть 85 %, кашемир 15 %, 7350 ₽; Kamanta — с ярлыка в вороте, Loro
      Piana — с ярлыка ткани. Размер не назван. Первым кадр после
