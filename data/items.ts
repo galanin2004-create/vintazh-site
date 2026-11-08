@@ -56,9 +56,34 @@ import crmItems from "./crm-items.json";
 
 /** Вещи, записанные руками: съёмки владелицы. */
 const staticItems: Item[] = [
+  /* ——— Жакет, прислан владелицей. С бирки: твид, Италия, ткань Loro Piana,
+     шерсть 85 %, кашемир 15 %, 7350 ₽; Kamanta — с ярлыка в вороте, Loro
+     Piana — с ярлыка ткани. Размер не назван. Пока только снимки из
+     галереи; кадр после нейросети поставить первым. */
+  {
+    slug: "zhaket-tvid-kamanta-loro-piana",
+    title: "Твидовый жакет Kamanta из ткани Loro Piana",
+    country: "italy",
+    kind: "suits",
+    price: 7350,
+    material: "Шерсть 85 %, кашемир 15 % (ткань Loro Piana)",
+    story:
+      "Твид в мелкую гусиную лапку с клеткой: оливковые, бежевые и коричневые тона с рыжей нитью. Ткань Loro Piana — шерсть 85 %, кашемир 15 %. Однобортный, на одной пуговице, карманы с клапанами, ярлык Kamanta, сделано в Италии.",
+    addedAt: "2026-11-08",
+    photos: [
+      "/items/zhaket-tvid-kamanta-loro-piana/1.jpg",
+      "/items/zhaket-tvid-kamanta-loro-piana/2.jpg",
+      "/items/zhaket-tvid-kamanta-loro-piana/3.jpg",
+      "/items/zhaket-tvid-kamanta-loro-piana/4.jpg",
+      "/items/zhaket-tvid-kamanta-loro-piana/5.jpg",
+      "/items/zhaket-tvid-kamanta-loro-piana/6.jpg",
+    ],
+  },
+
   /* ——— Жакет, прислан владелицей. Christian Lacroix, шёлк 100 %, Франция,
      размер 42–44 рос. (на ярлыке 36), 9500 ₽ — с её слов и ярлыка.
-     Пока только снимки из галереи; кадр после нейросети поставить первым. */
+     Первым кадр после нейросети (7.jpg, стена дотянута вверх), затем
+     снимки из галереи. */
   {
     slug: "zhaket-christian-lacroix-shelk",
     title: "Жакет Christian Lacroix, шёлк в полоску",
@@ -71,6 +96,7 @@ const staticItems: Item[] = [
       "Шёлк с переливом в оливковых и золотистых тонах, тонкая коричневая и розовая полоска. Широкий воротник, клапаны на груди, округлые накладные карманы, короткий рукав; пуговицы с рельефными цветами под янтарной эмалью.",
     addedAt: "2026-11-08",
     photos: [
+      "/items/zhaket-christian-lacroix-shelk/7.jpg",
       "/items/zhaket-christian-lacroix-shelk/1.jpg",
       "/items/zhaket-christian-lacroix-shelk/2.jpg",
       "/items/zhaket-christian-lacroix-shelk/3.jpg",
