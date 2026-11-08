@@ -58,8 +58,9 @@ import crmItems from "./crm-items.json";
 const staticItems: Item[] = [
   /* ——— Жакет, прислан владелицей. С бирки: твид, Италия, ткань Loro Piana,
      шерсть 85 %, кашемир 15 %, 7350 ₽; Kamanta — с ярлыка в вороте, Loro
-     Piana — с ярлыка ткани. Размер не назван. Пока только снимки из
-     галереи; кадр после нейросети поставить первым. */
+     Piana — с ярлыка ткани. Размер не назван. Первым кадр после
+     нейросети (7.jpg, клетка на нём ровнее и теплее настоящей), затем
+     снимки из галереи. */
   {
     slug: "zhaket-tvid-kamanta-loro-piana",
     title: "Твидовый жакет Kamanta из ткани Loro Piana",
@@ -71,6 +72,7 @@ const staticItems: Item[] = [
       "Твид в мелкую гусиную лапку с клеткой: оливковые, бежевые и коричневые тона с рыжей нитью. Ткань Loro Piana — шерсть 85 %, кашемир 15 %. Однобортный, на одной пуговице, карманы с клапанами, ярлык Kamanta, сделано в Италии.",
     addedAt: "2026-11-08",
     photos: [
+      "/items/zhaket-tvid-kamanta-loro-piana/7.jpg",
       "/items/zhaket-tvid-kamanta-loro-piana/1.jpg",
       "/items/zhaket-tvid-kamanta-loro-piana/2.jpg",
       "/items/zhaket-tvid-kamanta-loro-piana/3.jpg",
