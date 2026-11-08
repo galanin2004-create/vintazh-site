@@ -58,7 +58,8 @@ import crmItems from "./crm-items.json";
 const staticItems: Item[] = [
   /* ——— Жакет, прислан владелицей. С бирки: Италия, твид, шерсть 60 %,
      альпака 20 % (остальные 20 % не указаны), нюанс — «подклад», 4500 ₽.
-     Что с подкладом, не уточнено. Размер не назван. Снимки как есть. */
+     Что с подкладом, не уточнено. Размер не назван. Первым кадр после нейросети (5.jpg), затем снимки
+     как есть. */
   {
     slug: "zhaket-tvid-alpaka-golubaya-kletka",
     title: "Твидовый жакет в голубую клетку, шерсть с альпакой",
@@ -70,6 +71,7 @@ const staticItems: Item[] = [
       "Твид в крупную клетку: серо-бежевая основа, тёмно-синие и голубые полосы, тонкая красная и рыжая нить. Однобортный на две золотистые пуговицы, карманы с клапанами. Есть нюанс с подкладкой — подробности по запросу.",
     addedAt: "2026-11-08",
     photos: [
+      "/items/zhaket-tvid-alpaka-golubaya-kletka/5.jpg",
       "/items/zhaket-tvid-alpaka-golubaya-kletka/1.jpg",
       "/items/zhaket-tvid-alpaka-golubaya-kletka/2.jpg",
       "/items/zhaket-tvid-alpaka-golubaya-kletka/3.jpg",
