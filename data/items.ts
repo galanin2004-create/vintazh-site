@@ -78,8 +78,8 @@ const staticItems: Item[] = [
   },
 
   /* ——— Жакет, прислан владелицей. С бирки: Италия, шерсть 25 % (остальной
-     состав не указан), 3500 ₽; размер 42 — с её слов. Снимки из галереи
-     как есть. */
+     состав не указан), 3500 ₽; размер 42 — с её слов. Первым кадр после
+     нейросети (4.jpg), затем снимки из галереи как есть. */
   {
     slug: "zhaket-gusinaya-lapka-kosaya-molniya",
     title: "Жакет в гусиную лапку с косой молнией",
@@ -92,6 +92,7 @@ const staticItems: Item[] = [
       "Крупная чёрно-белая гусиная лапка с чёрной фактурной тканью на лацканах, планке и поясе. Косая молния по образцу косухи, приталенный силуэт, широкие лацканы.",
     addedAt: "2026-11-08",
     photos: [
+      "/items/zhaket-gusinaya-lapka-kosaya-molniya/4.jpg",
       "/items/zhaket-gusinaya-lapka-kosaya-molniya/1.jpg",
       "/items/zhaket-gusinaya-lapka-kosaya-molniya/2.jpg",
       "/items/zhaket-gusinaya-lapka-kosaya-molniya/3.jpg",
