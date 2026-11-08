@@ -56,6 +56,36 @@ import crmItems from "./crm-items.json";
 
 /** Вещи, записанные руками: съёмки владелицы. */
 const staticItems: Item[] = [
+  /* ——— Кимоно, прислано владелицей. Шёлк 100 %, Япония, 17 000 ₽ — с её
+     слов. Размер не назван. Все снимки как есть, в том числе на владелице
+     (она сама разрешила их ставить). */
+  {
+    slug: "kimono-shelk-chernoe-vyshivka",
+    title: "Чёрное шёлковое кимоно с вышивкой по подолу",
+    country: "japan",
+    kind: "dresses",
+    price: 17000,
+    material: "Шёлк 100 %",
+    story:
+      "Чёрное шёлковое кимоно с белым воротником и гербами-камон на груди, спине и рукавах. По подолу — хризантемы и связка лент, вышитая золотой и серебряной нитью, с букетом цветов в красных, синих и сиреневых тонах.",
+    addedAt: "2026-11-08",
+    photos: [
+      "/items/kimono-shelk-chernoe-vyshivka/1.jpg",
+      "/items/kimono-shelk-chernoe-vyshivka/2.jpg",
+      "/items/kimono-shelk-chernoe-vyshivka/3.jpg",
+      "/items/kimono-shelk-chernoe-vyshivka/4.jpg",
+      "/items/kimono-shelk-chernoe-vyshivka/5.jpg",
+      "/items/kimono-shelk-chernoe-vyshivka/6.jpg",
+      "/items/kimono-shelk-chernoe-vyshivka/7.jpg",
+      "/items/kimono-shelk-chernoe-vyshivka/8.jpg",
+      "/items/kimono-shelk-chernoe-vyshivka/9.jpg",
+      "/items/kimono-shelk-chernoe-vyshivka/10.jpg",
+      "/items/kimono-shelk-chernoe-vyshivka/11.jpg",
+      "/items/kimono-shelk-chernoe-vyshivka/12.jpg",
+      "/items/kimono-shelk-chernoe-vyshivka/13.jpg",
+    ],
+  },
+
   /* ——— Жакет, прислан владелицей. С бирки: твид, шерсть 25 %, 4500 ₽.
      Страна, остальной состав и размер не указаны. Первым кадр после
      нейросети (3.jpg), затем снимки как есть. */
