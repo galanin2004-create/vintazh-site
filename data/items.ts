@@ -57,8 +57,8 @@ import crmItems from "./crm-items.json";
 /** Вещи, записанные руками: съёмки владелицы. */
 const staticItems: Item[] = [
   /* ——— Жакет, прислан владелицей. С бирки: ручная работа, шерсть, 8300 ₽.
-     Страна и размер не названы, валяние — по кадру. Пока только снимки
-     из галереи; кадр после нейросети поставить первым. */
+     Страна и размер не названы, валяние — по кадру. Первым кадр после
+     нейросети (7.jpg), затем снимки из галереи. */
   {
     slug: "zhaket-valyanyy-ruchnaya-rabota",
     title: "Валяный жакет ручной работы с цветами",
@@ -71,6 +71,7 @@ const staticItems: Item[] = [
     marks: ["Ручная работа"],
     addedAt: "2026-11-08",
     photos: [
+      "/items/zhaket-valyanyy-ruchnaya-rabota/7.jpg",
       "/items/zhaket-valyanyy-ruchnaya-rabota/1.jpg",
       "/items/zhaket-valyanyy-ruchnaya-rabota/2.jpg",
       "/items/zhaket-valyanyy-ruchnaya-rabota/3.jpg",
