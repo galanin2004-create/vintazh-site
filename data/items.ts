@@ -56,6 +56,30 @@ import crmItems from "./crm-items.json";
 
 /** Вещи, записанные руками: съёмки владелицы. */
 const staticItems: Item[] = [
+  /* ——— Жакет, прислан владелицей. Christian Lacroix, шёлк 100 %, Франция,
+     размер 42–44 рос. (на ярлыке 36), 9500 ₽ — с её слов и ярлыка.
+     Пока только снимки из галереи; кадр после нейросети поставить первым. */
+  {
+    slug: "zhaket-christian-lacroix-shelk",
+    title: "Жакет Christian Lacroix, шёлк в полоску",
+    country: "france",
+    kind: "suits",
+    price: 9500,
+    material: "Шёлк 100 %",
+    size: "42–44 (на ярлыке 36)",
+    story:
+      "Шёлк с переливом в оливковых и золотистых тонах, тонкая коричневая и розовая полоска. Широкий воротник, клапаны на груди, округлые накладные карманы, короткий рукав; пуговицы с рельефными цветами под янтарной эмалью.",
+    addedAt: "2026-11-08",
+    photos: [
+      "/items/zhaket-christian-lacroix-shelk/1.jpg",
+      "/items/zhaket-christian-lacroix-shelk/2.jpg",
+      "/items/zhaket-christian-lacroix-shelk/3.jpg",
+      "/items/zhaket-christian-lacroix-shelk/4.jpg",
+      "/items/zhaket-christian-lacroix-shelk/5.jpg",
+      "/items/zhaket-christian-lacroix-shelk/6.jpg",
+    ],
+  },
+
   /* ——— Бомбер, прислан владелицей. С бирки: винтаж, Америка, кожа 100 %,
      шерсть (процент на бирке обрезан), 9500 ₽; Lizsport — с ярлыка в
      вороте. Размер не назван. Первым кадр после нейросети (6.jpg,
