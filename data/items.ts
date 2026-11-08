@@ -58,8 +58,8 @@ import crmItems from "./crm-items.json";
 const staticItems: Item[] = [
   /* ——— Бомбер, прислан владелицей. С бирки: винтаж, Америка, кожа 100 %,
      шерсть (процент на бирке обрезан), 9500 ₽; Lizsport — с ярлыка в
-     вороте. Размер не назван. Пока только снимки из галереи; кадр после
-     нейросети поставить первым. */
+     вороте. Размер не назван. Первым кадр после нейросети (6.jpg,
+     буквы на нашивке на нём неразборчивы), затем снимки из галереи. */
   {
     slug: "bomber-sherst-kozha-malinovyy",
     title: "Бомбер Lizsport: малиновая шерсть и чёрная кожа",
@@ -71,6 +71,7 @@ const staticItems: Item[] = [
       "Бомбер из малиновой шерсти с рукавами из чёрной кожи: полосатая трикотажная резинка на воротнике, манжетах и поясе, застёжка на кнопки, на груди нашивка-герб с короной и лавровым венком. Ярлык Lizsport.",
     addedAt: "2026-11-08",
     photos: [
+      "/items/bomber-sherst-kozha-malinovyy/6.jpg",
       "/items/bomber-sherst-kozha-malinovyy/1.jpg",
       "/items/bomber-sherst-kozha-malinovyy/2.jpg",
       "/items/bomber-sherst-kozha-malinovyy/3.jpg",
