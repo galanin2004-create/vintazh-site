@@ -56,6 +56,34 @@ import crmItems from "./crm-items.json";
 
 /** Вещи, записанные руками: съёмки владелицы. */
 const staticItems: Item[] = [
+  /* ——— Жакет, прислан владелицей. С бирки: твид, Европа, шерсть, 4500 ₽;
+     мерки — с её бирки замеров. Размер не указан. Снимки как есть. */
+  {
+    slug: "zhaket-tvid-sinyaya-kletka-evropa",
+    title: "Твидовый жакет в сине-зелёную клетку",
+    country: "europe",
+    kind: "suits",
+    price: 4500,
+    material: "Шерсть",
+    story:
+      "Твид в клетку: ярко-синие и зелёные полосы с рыжей нитью и серебристыми вкраплениями. Приталенный, на три чёрные пуговицы, лацканы с чёрным кантом, карманы с клапанами.",
+    measurements: [
+      { label: "Обхват груди (ПОГ)", value: "40 см" },
+      { label: "Обхват талии (ПОТ)", value: "39 см" },
+      { label: "Плечо", value: "13 см" },
+      { label: "Длина рукава", value: "59 см" },
+      { label: "Ширина плеч", value: "40 см" },
+      { label: "Длина по спинке", value: "63 см" },
+    ],
+    addedAt: "2026-11-08",
+    photos: [
+      "/items/zhaket-tvid-sinyaya-kletka-evropa/1.jpg",
+      "/items/zhaket-tvid-sinyaya-kletka-evropa/2.jpg",
+      "/items/zhaket-tvid-sinyaya-kletka-evropa/3.jpg",
+      "/items/zhaket-tvid-sinyaya-kletka-evropa/4.jpg",
+    ],
+  },
+
   /* ——— Жакет, прислан владелицей. С бирки: Германия, жаккард, 6500 ₽.
      Размер не назван. Кадр 1 — после нейросети (жакет во всю ширину, фон
      дотянут вверх), 2–5 — снимки из галереи как есть. */
