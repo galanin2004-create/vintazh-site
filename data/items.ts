@@ -57,7 +57,9 @@ import crmItems from "./crm-items.json";
 /** Вещи, записанные руками: съёмки владелицы. */
 const staticItems: Item[] = [
   /* ——— Жакет, прислан владелицей. С бирки: твид, Европа, шерсть, 4500 ₽;
-     мерки — с её бирки замеров. Размер не указан. Снимки как есть. */
+     мерки — с её бирки замеров. Размер не указан. Первым кадр после
+     нейросети (5.jpg, на нём нет чёрного канта на лацканах), затем снимки
+     как есть. */
   {
     slug: "zhaket-tvid-sinyaya-kletka-evropa",
     title: "Твидовый жакет в сине-зелёную клетку",
@@ -77,6 +79,7 @@ const staticItems: Item[] = [
     ],
     addedAt: "2026-11-08",
     photos: [
+      "/items/zhaket-tvid-sinyaya-kletka-evropa/5.jpg",
       "/items/zhaket-tvid-sinyaya-kletka-evropa/1.jpg",
       "/items/zhaket-tvid-sinyaya-kletka-evropa/2.jpg",
       "/items/zhaket-tvid-sinyaya-kletka-evropa/3.jpg",
