@@ -167,6 +167,7 @@ const staticItems: Item[] = [
      как есть. */
   {
     slug: "zhaket-tvid-alpaka-golubaya-kletka",
+    sold: true,
     title: "Твидовый жакет в голубую клетку, шерсть с альпакой",
     country: "italy",
     kind: "suits",
@@ -757,6 +758,7 @@ const staticItems: Item[] = [
      не повторяли друг друга), 2 и 3 — снимки владелицы. */
   {
     slug: "kolco-millefiori-razdvizhnoe",
+    sold: true,
     title: "Кольцо с миллефиори, раздвижное",
     country: "japan",
     kind: "jewelry",
@@ -801,6 +803,7 @@ const staticItems: Item[] = [
      Кадр 1 — после нейросети, 2 и 3 — снимки владелицы. */
   {
     slug: "brosh-catherine-popesco",
+    sold: true,
     title: "Брошь Catherine Popesco с винной эмалью",
     country: "france",
     era: "1980-е",
@@ -984,6 +987,7 @@ const staticItems: Item[] = [
      жилетов, что уже на витрине, на коричневом фоне; не дублируем. */
   {
     slug: "plate-kletka-terrakota",
+    sold: true,
     title: "Платье в крупную клетку, терракотовое",
     country: "austria",
     kind: "dresses",
@@ -1014,6 +1018,7 @@ const staticItems: Item[] = [
   },
   {
     slug: "kostyum-vyazanyy-zhaket-yubka",
+    sold: true,
     title: "Вязаный костюм: жакет и юбка, серо-голубой меланж",
     country: "other",
     kind: "suits",
@@ -1025,6 +1030,7 @@ const staticItems: Item[] = [
   },
   {
     slug: "sergi-zhemchug-biser",
+    sold: true,
     title: "Серьги с жемчужиной и бисером",
     country: "japan",
     kind: "jewelry",
@@ -1035,6 +1041,7 @@ const staticItems: Item[] = [
   },
   {
     slug: "sergi-kameya-profil",
+    sold: true,
     title: "Серьги-камеи с женским профилем, голубые",
     country: "japan",
     kind: "jewelry",
@@ -1045,6 +1052,7 @@ const staticItems: Item[] = [
   },
   {
     slug: "sergi-kameya-roza",
+    sold: true,
     title: "Серьги-камеи с розой, бирюзовые",
     country: "japan",
     kind: "jewelry",
@@ -1055,6 +1063,7 @@ const staticItems: Item[] = [
   },
   {
     slug: "brosh-tri-lista-korall",
+    sold: true,
     title: "Брошь «Три листа» с бусинами кораллового цвета",
     country: "japan",
     kind: "jewelry",
