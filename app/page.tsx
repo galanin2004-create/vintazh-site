@@ -3,7 +3,7 @@ import { asset } from "@/lib/asset";
 import { brand, principles, contacts, CTA, CTA_HOLD, plural } from "@/lib/brand";
 import { payEnabled } from "@/lib/pay";
 import { sortNewestFirst } from "@/data/items";
-import { liveItems } from "@/lib/sold";
+import { liveItems, soldItems } from "@/lib/sold";
 import { stockedAxes } from "@/data/taxonomy";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/ui/Reveal";
@@ -14,6 +14,8 @@ export default function HomePage() {
   const fresh = sortNewestFirst(liveItems).slice(0, 8);
   const axes = stockedAxes(liveItems);
   const inStock = liveItems.length;
+  // Последние ушедшие вещи — внизу главной; весь архив на /sold
+  const gone = soldItems.slice(0, 8);
 
   return (
     <>
@@ -282,6 +284,43 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ——— Уже куплено ——————————————————————————————————————— */}
+      {gone.length > 0 && (
+        <section className="section">
+          <div className="shell">
+            <Reveal>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "flex-end",
+                  justifyContent: "space-between",
+                  gap: "18px",
+                  marginBottom: "clamp(28px, 4vw, 44px)",
+                }}
+              >
+                <div className="head">
+                  <p className="rubric">Архив</p>
+                  <h2>Уже нашли владельца</h2>
+                </div>
+                <Link href="/sold" className="link">
+                  Все проданные вещи
+                  <ArrowRight className="link__arrow" />
+                </Link>
+              </div>
+            </Reveal>
+
+            <div className="grid">
+              {gone.map((item, i) => (
+                <Reveal key={item.slug} delay={(i % 4) * 70}>
+                  <ProductCard item={item} sold />
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </>
   );
 }
