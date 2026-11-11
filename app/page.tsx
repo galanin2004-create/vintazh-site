@@ -4,7 +4,6 @@ import { brand, principles, contacts, CTA, CTA_HOLD, plural } from "@/lib/brand"
 import { payEnabled } from "@/lib/pay";
 import { sortNewestFirst } from "@/data/items";
 import { liveItems, soldItems } from "@/lib/sold";
-import { stockedAxes } from "@/data/taxonomy";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/ui/Reveal";
 import { ArrowRight, Wave } from "@/components/ui/Icons";
@@ -12,7 +11,6 @@ import { ArrowRight, Wave } from "@/components/ui/Icons";
 export default function HomePage() {
   // Проданное на главную не выносим: его место — в «Уже куплено»
   const fresh = sortNewestFirst(liveItems).slice(0, 8);
-  const axes = stockedAxes(liveItems);
   const inStock = liveItems.length;
   // Последние ушедшие вещи — внизу главной; весь архив на /sold
   const gone = soldItems.slice(0, 8);
@@ -163,44 +161,6 @@ export default function HomePage() {
                 </Reveal>
               ))}
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ——— Три оси навигации ————————————————————————————— */}
-      <section className="section">
-        <div className="shell">
-          <Reveal>
-            <div className="head" style={{ marginBottom: "clamp(28px, 4vw, 44px)" }}>
-              <p className="rubric">Навигация</p>
-              <h2>Два способа найти своё</h2>
-              <p className="text">
-                Каталог фильтруется по двум осям одновременно. Любая вещь описана
-                обеими: страна изготовителя и тип вещи.
-              </p>
-            </div>
-          </Reveal>
-
-          <div className="axes">
-            {axes.map((axis, i) => (
-              <Reveal key={axis.key} delay={i * 90}>
-                <div className="axis">
-                  <div className="axis__head">
-                    <h3 className="axis__title">{axis.title}</h3>
-                    <span className="axis__index">{axis.index}</span>
-                  </div>
-                  <ul className="axis__list">
-                    {axis.facets.map((f) => (
-                      <li key={f.slug}>
-                        <Link href={`/catalog?${axis.key}=${f.slug}`}>
-                          {f.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </Reveal>
-            ))}
           </div>
         </div>
       </section>
