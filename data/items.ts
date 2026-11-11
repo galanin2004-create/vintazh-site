@@ -540,6 +540,7 @@ const staticItems: Item[] = [
      2–4 — снимки из галереи, на кадре 2 видна пряжка, на 4 — ярлык. */
   {
     slug: "sumka-montini-bezhevaya",
+    sold: true,
     title: "Сумка Montini, бежевая кожа под ящерицу",
     country: "italy",
     kind: "bags",
