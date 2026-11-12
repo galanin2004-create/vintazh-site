@@ -405,6 +405,7 @@ const staticItems: Item[] = [
      нейросети (3.jpg), затем снимки как есть. */
   {
     slug: "zhaket-tvid-zeleno-sinyaya-kletka",
+    sold: true,
     title: "Твидовый жакет в зелёно-синюю клетку",
     country: "other",
     kind: "suits",
