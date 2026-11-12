@@ -68,7 +68,9 @@ const staticItems: Item[] = [
      номера 2007205 из её текста на снимке нет — не вынесен. Надпись
      «Handmade in Old Mexico for the best of the West» — на снимке 4.
      Кадры: 1 — спереди, 2 — клеймо на ремне, 3 — оборот пряжки,
-     4 — изнанка с клеймом и надписью (цифры «32 /…» обрезаны, размер не вынесен). */
+     4 — изнанка с клеймом и надписью (цифры «32 /…» обрезаны, размер не вынесен);
+     5 (первый) — после нейросети, целиком; надписи JACK DANIEL’S и OLD No 7
+     BRAND на нём сверены — написаны верно. */
   {
     slug: "remen-jack-daniels-messico-e-nuvole",
     title: "Мужской кожаный ремень с пряжкой Jack Daniel's",
@@ -81,7 +83,7 @@ const staticItems: Item[] = [
     measurements: [{ label: "Длина без пряжки", value: "96 см" }],
     marks: ["Ручная работа"],
     addedAt: "2026-11-12",
-    photos: [1, 2, 4, 3].map((p) => `/items/remen-jack-daniels-messico-e-nuvole/${p}.jpg`),
+    photos: [5, 1, 2, 4, 3].map((p) => `/items/remen-jack-daniels-messico-e-nuvole/${p}.jpg`),
   },
 
   /* ——— Сумка, прислана 12.11.2026. Со слов владелицы: антикварная, Италия,
