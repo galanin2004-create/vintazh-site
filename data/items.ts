@@ -66,8 +66,9 @@ const staticItems: Item[] = [
      Страна — Италия, по марке ремня (как Kenzo → Франция). На обороте
      пряжки видно «® & © 2005 Jack Daniel's All Rights Reserved 5007JD»;
      номера 2007205 из её текста на снимке нет — не вынесен. Надпись
-     «Handmade in Old Mexico…» на снимках не читается — взято с её слов.
-     Кадры: 1 — спереди, 2 — клеймо на ремне, 3 — оборот пряжки. */
+     «Handmade in Old Mexico for the best of the West» — на снимке 4.
+     Кадры: 1 — спереди, 2 — клеймо на ремне, 3 — оборот пряжки,
+     4 — изнанка с клеймом и надписью (цифры «32 /…» обрезаны, размер не вынесен). */
   {
     slug: "remen-jack-daniels-messico-e-nuvole",
     title: "Мужской кожаный ремень с пряжкой Jack Daniel's",
@@ -76,11 +77,11 @@ const staticItems: Item[] = [
     price: 7350,
     material: "Кожа",
     story:
-      "Пряжка Jack Daniel's с логотипом Old No. 7, на обороте — «© 2005 Jack Daniel's» и артикул 5007JD. Ремень ручной работы сделан в Мексике для итальянской марки Messico e Nuvole — её клеймо выбито на коже.",
+      "Пряжка Jack Daniel's с логотипом Old No. 7, на обороте — «© 2005 Jack Daniel's» и артикул 5007JD. Ремень ручной работы итальянской марки Messico e Nuvole, на изнанке — «Handmade in Old Mexico for the best of the West».",
     measurements: [{ label: "Длина без пряжки", value: "96 см" }],
     marks: ["Ручная работа"],
     addedAt: "2026-11-12",
-    photos: [1, 2, 3].map((p) => `/items/remen-jack-daniels-messico-e-nuvole/${p}.jpg`),
+    photos: [1, 2, 4, 3].map((p) => `/items/remen-jack-daniels-messico-e-nuvole/${p}.jpg`),
   },
 
   /* ——— Сумка, прислана 12.11.2026. Со слов владелицы: антикварная, Италия,
